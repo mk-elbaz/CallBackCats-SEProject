@@ -18,12 +18,12 @@ export default {
     register : user =>{
         console.log(user);
         return fetch('/user/register',{
-            method : "post",
+            method : 'POST',
             body : JSON.stringify(user),
             headers : {
                 'Content-Type' : 'application/json'
             }
-        }).then(res => res.json())
+        }).then(response => response.json())
           .then(data => data);
     },
     logout : ()=>{

@@ -61,7 +61,7 @@ const Register = props=>{
                        value={user.role}  
                        onChange={onChange} 
                        className="form-control" 
-                       placeholder="Enter role (admin/user)"/>
+                       placeholder="Enter role (admin/ta/student)"/>
                 <button className="btn btn-lg btn-primary btn-block" 
                         type="submit">Register</button>
             </form>

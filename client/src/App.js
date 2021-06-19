@@ -5,6 +5,8 @@ import Home from './Components/Home';
 import Todos from './Components/Todos';
 import Register from './Components/Register';
 import Admin  from './Components/Admin';
+import Student  from './Components/Student';
+import TA  from './Components/TA';
 import Enroll from './Components/Enroll';
 import PrivateRoute from './hocs/PrivateRoute';
 import UnPrivateRoute from './hocs/UnPrivateRoute';
@@ -20,6 +22,8 @@ function App() {
       <UnPrivateRoute path="/enroll" component={Enroll}/>
       <PrivateRoute path="/todos" roles={["user","admin"]} component={Todos}/>
       <PrivateRoute path="/admin" roles={["admin"]} component={Admin}/>
+      <PrivateRoute path="/ta" roles={["ta"]} component={TA}/>
+      <PrivateRoute path="/student" roles={["student"]} component={Student}/>
     </Router>
   );
 }

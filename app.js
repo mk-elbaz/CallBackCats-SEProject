@@ -4,12 +4,17 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 app.use(cookieParser());
 app.use(express.json());
+var cors = require('cors')
+
+app.use(cors()) 
 
 mongoose.connect('mongodb+srv://mkelbaz:nnkoko11@meow.0bthm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{useNewUrlParser : true,useUnifiedTopology: true},()=>{
     console.log('successfully connected to database');
 });
 
-const userRouter = require('./routes/User');
+
+
+const userRouter = require('./routes/User.js');
 app.use('/user',userRouter);
 
 app.listen(5000,()=>{

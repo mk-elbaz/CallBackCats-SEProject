@@ -5,8 +5,8 @@ const UserSchema = new mongoose.Schema({
     username :{
         type : String,
         required : true,
-        min : 6,
-        max : 15
+        minLength : 3,
+        maxLength : 15
     },
     password : {
         type : String,
@@ -14,11 +14,12 @@ const UserSchema = new mongoose.Schema({
     },
     role : {
         type : String,
-        enum : ['ta','admin','student'],
+        enum : ['TA','ADMIN','STUDENT'],
         required: true
     },
     todos : [{type : mongoose.Schema.Types.ObjectId, ref: 'Todo'}]
 });
+
 
 UserSchema.pre('save',function(next){
     if(!this.isModified('password'))
