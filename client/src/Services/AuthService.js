@@ -9,7 +9,7 @@ export default {
       },
     }).then((res) => {
       if (res.status !== 401) return res.json().then((data) => data);
-      else return { isAuthenticated: false, user: { username: "", role: "" , role2: ""} };
+      else return { isAuthenticated: false, user: { username: "", role: "" } };
     });
   },
   register: (user) => {
@@ -32,7 +32,7 @@ export default {
   isAuthenticated: () => {
     return fetch("/user/authenticated").then((res) => {
       if (res.status !== 401) return res.json().then((data) => data);
-      else return { isAuthenticated: false, user: { username: "", role: "" , role2: ""} };
+      else return { isAuthenticated: false, user: { username: "", role: "" } };
     });
   },
 };

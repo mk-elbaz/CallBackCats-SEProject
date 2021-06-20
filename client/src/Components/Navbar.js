@@ -60,7 +60,7 @@ const Navbar = props =>{
                     </Link> : null
                 }
                 {
-                    user.role2 === "student" ? 
+                    user.role === "student" ? 
                     <Link to="/student">
                         <li className="nav-item nav-link">
                             Student
@@ -68,7 +68,7 @@ const Navbar = props =>{
                     </Link> : null
                 }
                 {
-                    user.role2 === "ta" ? 
+                    user.role === "ta" ? 
                     <Link to="/ta">
                         <li className="nav-item nav-link">
                             TA
