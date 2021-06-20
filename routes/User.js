@@ -4,7 +4,6 @@ const passport = require('passport');
 const passportConfig = require('../passport');
 const JWT = require('jsonwebtoken');
 const User = require('../models/User');
-const Todo = require('../models/Todo');
 
 
 const signToken = userID =>{
@@ -16,19 +15,22 @@ const signToken = userID =>{
 
 userRouter.post('/register',(req,res)=>{
     console.log('aaaaaaaaaaa');
-    const { username,password,role } = req.body;
+    const { username,password,role,role2 } = req.body;
     User.findOne({username},(err,user)=>{
         if(err)
             res.status(500).json({message : {msgBody : "Error has occccccccured", msgError: true}});
         if(user)
             res.status(400).json({message : {msgBody : "Username is already taken", msgError: true}});
         else{
-            const newUser = new User({username,password,role});
+            console.log('im here');
+            const newUser = new User({username,password,role,role2});
             newUser.save(err=>{
                 if(err)
                     res.status(500).json({message : {msgBody : "Error has ooooooccured", msgError: true}});
-                else
+                else{
                     res.status(201).json({message : {msgBody : "Account successfully created", msgError: false}});
+                    console.log('now here');
+                }
             });
         }
     });
@@ -36,10 +38,10 @@ userRouter.post('/register',(req,res)=>{
 
 userRouter.post('/login',passport.authenticate('local',{session : false}),(req,res)=>{
     if(req.isAuthenticated()){
-       const {_id,username,role} = req.user;
+       const {_id,username,role,role2} = req.user;
        const token = signToken(_id);
        res.cookie('access_token',token,{httpOnly: true, sameSite:true}); 
-       res.status(200).json({isAuthenticated : true,user : {username,role}});
+       res.status(200).json({isAuthenticated : true,user : {username,role,role2}});
     }
 });
 
@@ -48,6 +50,8 @@ userRouter.get('/logout',passport.authenticate('jwt',{session : false}),(req,res
     res.json({user:{username : "", role : ""},success : true});
 });
 
+
+/*
 userRouter.post('/todo',passport.authenticate('jwt',{session : false}),(req,res)=>{
     const todo = new Todo(req.body);
     todo.save(err=>{
@@ -64,16 +68,8 @@ userRouter.post('/todo',passport.authenticate('jwt',{session : false}),(req,res)
         }
     })
 });
+*/
 
-userRouter.get('/todos',passport.authenticate('jwt',{session : false}),(req,res)=>{
-    User.findById({_id : req.user._id}).populate('todos').exec((err,document)=>{
-        if(err)
-            res.status(500).json({message : {msgBody : "Error has occured", msgError: true}});
-        else{
-            res.status(200).json({todos : document.todos, authenticated : true});
-        }
-    });
-});
 
 userRouter.get('/admin',passport.authenticate('jwt',{session : false}),(req,res)=>{
     if(req.user.role === 'admin'){
@@ -84,8 +80,8 @@ userRouter.get('/admin',passport.authenticate('jwt',{session : false}),(req,res)
 });
 
 userRouter.get('/authenticated',passport.authenticate('jwt',{session : false}),(req,res)=>{
-    const {username,role} = req.user;
-    res.status(200).json({isAuthenticated : true, user : {username,role}});
+    const {username,role,role2} = req.user;
+    res.status(200).json({isAuthenticated : true, user : {username,role,role2}});
 });
 
 

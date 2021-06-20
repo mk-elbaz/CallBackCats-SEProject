@@ -4,9 +4,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 app.use(cookieParser());
 app.use(express.json());
-var cors = require('cors')
 
-app.use(cors()) 
 
 mongoose.connect('mongodb+srv://mkelbaz:nnkoko11@meow.0bthm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{useNewUrlParser : true,useUnifiedTopology: true},()=>{
     console.log('successfully connected to database');

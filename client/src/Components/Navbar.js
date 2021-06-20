@@ -50,16 +50,28 @@ const Navbar = props =>{
                         Home
                     </li>
                 </Link> 
-                <Link to="/todos">
-                    <li className="nav-item nav-link">
-                        Todos
-                    </li>
-                </Link> 
+                
                 {
                     user.role === "admin" ? 
                     <Link to="/admin">
                         <li className="nav-item nav-link">
                             Admin
+                        </li>
+                    </Link> : null
+                }
+                {
+                    user.role2 === "student" ? 
+                    <Link to="/student">
+                        <li className="nav-item nav-link">
+                            Student
+                        </li>
+                    </Link> : null
+                }
+                {
+                    user.role2 === "ta" ? 
+                    <Link to="/ta">
+                        <li className="nav-item nav-link">
+                            TA
                         </li>
                     </Link> : null
                 }  

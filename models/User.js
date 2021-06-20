@@ -14,14 +14,19 @@ const UserSchema = new mongoose.Schema({
     },
     role : {
         type : String,
-        enum : ['TA','ADMIN','STUDENT'],
+        enum : ['admin','user'],
         required: true
     },
-    todos : [{type : mongoose.Schema.Types.ObjectId, ref: 'Todo'}]
+    role2 : {
+        type : String,
+        enum : ['ta','admin','student','user'],
+        required: true,
+    }
 });
 
 
-UserSchema.pre('save',function(next){
+UserSchema.pre('save',async function(next){
+    console.log('meow');
     if(!this.isModified('password'))
         return next();
     bcrypt.hash(this.password,10,(err,passwordHash)=>{
