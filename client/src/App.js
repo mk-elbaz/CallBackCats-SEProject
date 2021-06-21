@@ -7,6 +7,7 @@ import Admin  from './Components/Admin';
 import Student  from './Components/Student';
 import TA  from './Components/TA';
 import Enroll from './Components/Enroll';
+import ChangePassword from './Components/ChangePassword';
 import PrivateRoute from './hocs/PrivateRoute';
 import UnPrivateRoute from './hocs/UnPrivateRoute';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
@@ -20,6 +21,7 @@ function App() {
       <UnPrivateRoute path="/register" component={Register}/>
       <UnPrivateRoute path="/enroll" component={Enroll}/>
       <PrivateRoute path="/admin" roles={["admin"]} component={Admin}/>
+      <PrivateRoute path="/changePass" roles={["admin","ta","student"]} component={ChangePassword}/>
       <PrivateRoute path="/ta" roles={["ta"]} component={TA}/>
       <PrivateRoute path="/student" roles={["student"]} component={Student}/>
     </Router>
