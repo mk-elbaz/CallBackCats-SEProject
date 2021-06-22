@@ -122,4 +122,12 @@ userRouter.get(
   }
 );
 
+const {
+  resetPasswordRequestController,
+  resetPasswordController,
+} = require("../controllers/auth.controller");
+
+userRouter.post("/auth/requestResetPassword", resetPasswordRequestController);
+userRouter.post("/auth/resetPassword", resetPasswordController);
+
 module.exports = userRouter;

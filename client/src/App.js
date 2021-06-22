@@ -21,7 +21,7 @@ function App() {
       <UnPrivateRoute path="/register" component={Register}/>
       <UnPrivateRoute path="/enroll" component={Enroll}/>
       <PrivateRoute path="/admin" roles={["admin"]} component={Admin}/>
-     // <PrivateRoute path="/auth/requestResetPassword" roles={["admin","ta","student"]} component={ChangePassword}/>
+      <PrivateRoute path="/auth/requestResetPassword" roles={["admin","ta","student"]} component={ChangePassword}/>
       <PrivateRoute path="/ta" roles={["ta"]} component={TA}/>
       <PrivateRoute path="/student" roles={["student"]} component={Student}/>
     </Router>

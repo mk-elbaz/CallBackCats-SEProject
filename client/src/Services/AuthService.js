@@ -15,6 +15,9 @@ export default {
                 return { isAuthenticated : false, user : {email : "",role : ""}};
         })
     },
+    changePassword : user => {
+
+    },
     register : user =>{
         console.log(user);
         return fetch('/user/register',{
