@@ -1,7 +1,7 @@
 import React from "react";
 
-const changePass = () => (
-  <div>
+const changePass = () => {
+  /*<div>
     <form onSubmit={onSubmit}>
       <h1>Change Password</h1>
       <input
@@ -14,7 +14,7 @@ const changePass = () => (
       />
     </form>
     {message ? <Message message={message} /> : null}
-  </div>
-);
+  </div>*/
+};
 
 export default changePass;
