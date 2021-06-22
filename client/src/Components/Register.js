@@ -3,7 +3,7 @@ import AuthService from "../Services/AuthService";
 import Message from "../Components/Message";
 
 const Register = (props) => {
-  const [user, setUser] = useState({ username: "", password: "", role: "" });
+  const [user, setUser] = useState({ email: "", password: "", role: "" });
   const [message, setMessage] = useState(null);
   let timerID = useRef(null);
 
@@ -18,7 +18,7 @@ const Register = (props) => {
   };
 
   const resetForm = () => {
-    setUser({ username: "", password: "", role: "" });
+    setUser({ email: "", password: "", role: "" });
   };
 
   const onSubmit = (e) => {
@@ -39,16 +39,16 @@ const Register = (props) => {
     <div>
       <form onSubmit={onSubmit}>
         <h3>Please Register</h3>
-        <label htmlFor="username" className="sr-only">
-          Username:{" "}
+        <label htmlFor="email" className="sr-only">
+          email:{" "}
         </label>
         <input
           type="text"
-          name="username"
-          value={user.username}
+          name="email"
+          value={user.email}
           onChange={onChange}
           className="form-control"
-          placeholder="Enter Username"
+          placeholder="Enter email"
         />
         <label htmlFor="password" className="sr-only">
           Password:{" "}
