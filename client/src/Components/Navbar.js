@@ -75,14 +75,6 @@ const Navbar = props =>{
                         </li>
                     </Link> : null
                 }  
-                {
-                    user.role === "ta" || user.role === "admin" || user.role === "student" ? 
-                    <Link to="/changePass">
-                        <li className="nav-item nav-link">
-                            Change Password
-                        </li>
-                    </Link> : null
-                }  
                 <button type="button" 
                         className="btn btn-link nav-item nav-link" 
                         onClick={onClickLogoutHandler}>Logout</button>
