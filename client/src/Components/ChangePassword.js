@@ -1,10 +1,8 @@
 import React from "react";
 
-<<<<<<< HEAD
 const changePass = () => (
   <h1>Change Pass Page </h1>
 )
-=======
 const changePass = () => {
   /*<div>
     <form onSubmit={onSubmit}>
@@ -21,6 +19,5 @@ const changePass = () => {
     {message ? <Message message={message} /> : null}
   </div>*/
 };
->>>>>>> parent of 1d84d79 (Revert "weee")
 
 export default changePass;
