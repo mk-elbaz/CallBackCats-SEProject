@@ -20,13 +20,6 @@ function App() {
       <UnPrivateRoute path="/register" component={Register}/>
       <UnPrivateRoute path="/enroll" component={Enroll}/>
       <PrivateRoute path="/admin" roles={["admin"]} component={Admin}/>
-<<<<<<< HEAD
-<<<<<<< HEAD
-     // <PrivateRoute path="/auth/requestResetPassword" roles={["admin","ta","student"]} component={ChangePassword}/>
-=======
->>>>>>> parent of a4d945c (a)
-=======
->>>>>>> parent of a4d945c (a)
       <PrivateRoute path="/ta" roles={["ta"]} component={TA}/>
       <PrivateRoute path="/student" roles={["student"]} component={Student}/>
     </Router>
