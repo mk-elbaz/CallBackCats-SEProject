@@ -6,7 +6,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 
-mongoose.connect('mongodb+srv://mkelbaz:nnkoko11@cluster0.0bthm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{useNewUrlParser : true,useUnifiedTopology: true},()=>{
+mongoose.connect('mongodb+srv://mkelbaz:nnkoko11@bazdb.0bthm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{useNewUrlParser : true,useUnifiedTopology: true},()=>{
     console.log('successfully connected to database');
 });
 
