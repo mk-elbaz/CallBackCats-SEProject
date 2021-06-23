@@ -2,9 +2,9 @@ import React from "react";
 
 const changePass = () => (
   <h1>Change Pass Page </h1>
-)
+)/*
 const changePass = () => {
-  /*<div>
+  <div>
     <form onSubmit={onSubmit}>
       <h1>Change Password</h1>
       <input
@@ -17,7 +17,7 @@ const changePass = () => {
       />
     </form>
     {message ? <Message message={message} /> : null}
-  </div>*/
-};
+  </div>
+};*/
 
 export default changePass;
