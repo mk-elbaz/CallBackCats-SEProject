@@ -28,7 +28,18 @@ export default {
     return fetch("/user/logout")
       .then((res) => res.json())
       .then((data) => data);
-  },
+  }/*,
+  changePass: (user) => {
+    return fetch(`/changePass/${user._id}`, {
+      method: "put",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => data);
+  }*/,
   isAuthenticated: () => {
     return fetch("/user/authenticated").then((res) => {
       if (res.status !== 401) return res.json().then((data) => data);

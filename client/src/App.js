@@ -12,6 +12,10 @@ import PrivateRoute from './hocs/PrivateRoute';
 import UnPrivateRoute from './hocs/UnPrivateRoute';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 
+
+
+
+
 function App() {
   return (
     <Router>
