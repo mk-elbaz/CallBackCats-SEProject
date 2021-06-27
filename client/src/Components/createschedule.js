@@ -64,39 +64,74 @@ export default function Createschedule() {
     <div>
       <form onSubmit={onSubmit}>
         <h3>Create Schedule</h3>
+        <label htmlFor="day" className="sr-only">
+          day:{" "}
+        </label>
+        <input
+          type="text"
+          name="day"
+          value={schedule.day}
+          onChange={onChange}
+          className="form-control"
+          placeholder="Enter The Day"
+        />
         <label htmlFor="first" className="sr-only">
-          Username:{" "}
+          first:{" "}
         </label>
         <input
           type="text"
-          name="username"
-          value={user.username}
+          name="first"
+          value={schedule.first}
           onChange={onChange}
           className="form-control"
-          placeholder="Enter Username"
+          placeholder="Enter First Slot"
         />
-        <label htmlFor="password" className="sr-only">
-          Password:{" "}
-        </label>
-        <input
-          type="password"
-          name="password"
-          value={user.password}
-          onChange={onChange}
-          className="form-control"
-          placeholder="Enter Password"
-        />
-        <label htmlFor="role" className="sr-only">
-          Role:{" "}
+         <label htmlFor="second" className="sr-only">
+          second:{" "}
         </label>
         <input
           type="text"
-          name="role"
-          value={user.role}
+          name="second"
+          value={schedule.second}
           onChange={onChange}
           className="form-control"
-          placeholder="Enter role (admin/ta/student)"
+          placeholder="Enter Second Slot"
         />
+         <label htmlFor="third" className="sr-only">
+          third:{" "}
+        </label>
+        <input
+          type="text"
+          name="third"
+          value={schedule.third}
+          onChange={onChange}
+          className="form-control"
+          placeholder="Enter Third Slot"
+        />
+         <label htmlFor="fourth" className="sr-only">
+          fourth:{" "}
+        </label>
+        <input
+          type="text"
+          name="fourth"
+          value={schedule.fourth}
+          onChange={onChange}
+          className="form-control"
+          placeholder="Enter Fourth Slot"
+        />
+         <label htmlFor="faculty" className="sr-only">
+          faculty:{" "}
+        </label>
+        <input
+          type="text"
+          name="faculty"
+          value={schedule.faculty}
+          onChange={onChange}
+          className="form-control"
+          placeholder="Enter The Faculty"
+        />
+        
+        
         <button className="btn btn-lg btn-primary btn-block" type="submit">
           Register
         </button>
