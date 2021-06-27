@@ -60,6 +60,22 @@ const Navbar = props =>{
                     </Link> : null
                 }
                 {
+                    user.role === "admin" ? 
+                    <Link to="/createSchedule">
+                        <li className="nav-item nav-link">
+                            Schedules
+                        </li>
+                    </Link> : null
+                }
+                {
+                    user.role === "admin" ? 
+                    <Link to="/viewSchedule">
+                        <li className="nav-item nav-link">
+                            View Schedules
+                        </li>
+                    </Link> : null
+                }
+                {
                     user.role === "student" ? 
                     <Link to="/student">
                         <li className="nav-item nav-link">

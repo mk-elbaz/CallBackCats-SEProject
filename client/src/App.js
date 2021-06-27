@@ -4,6 +4,8 @@ import Login from './Components/Login';
 import Home from './Components/Home';
 import Register from './Components/Register';
 import Admin  from './Components/Admin';
+import CreateSchedule  from './Components/createschedule';
+import ViewSchedule  from './Components/showschedule';
 import Student  from './Components/Student';
 import TA  from './Components/TA';
 import Enroll from './Components/Enroll';
@@ -25,10 +27,13 @@ function App() {
       <UnPrivateRoute path="/register" component={Register}/>
       <UnPrivateRoute path="/enroll" component={Enroll}/>
       <PrivateRoute path="/admin" roles={["admin"]} component={Admin}/>
+      <PrivateRoute path="/createSchedule" roles={["admin"]} component={CreateSchedule}/>
+      <PrivateRoute path="/viewSchedule" roles={["admin"]} component={ViewSchedule}/>
       <PrivateRoute path="/changePass" roles={["admin","ta","student"]} component={ChangePassword}/>
       <PrivateRoute path="/ta" roles={["ta"]} component={TA}/>
       <PrivateRoute path="/student" roles={["student"]} component={Student}/>
     </Router>
+
   );
 }
 

@@ -24,6 +24,18 @@ export default {
       .then((response) => response.json())
       .then((data) => data);
   },
+  createSchedule: (user) => {
+    console.log(user);
+    return fetch("/createSchedule", {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => data);
+  },
   logout: () => {
     return fetch("/user/logout")
       .then((res) => res.json())
