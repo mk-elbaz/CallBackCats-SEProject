@@ -4,6 +4,7 @@ const passport = require('passport');
 const passportConfig = require('../passport');
 const JWT = require('jsonwebtoken');
 const User = require('../models/User');
+const Applicant = require('../models/Applicant');
 
 
 const signToken = userID =>{
@@ -32,6 +33,27 @@ userRouter.post('/register',(req,res)=>{
         }
     });
 });
+
+userRouter.post('/enroll',(req,res)=>{
+    const { fullName, birthDate, email, grade, faculty, nationality } = req.body;
+    Applicant.findOne({email},(err,user)=>{
+        if(err)
+            res.status(500).json({message : {msgBody : "Error has occccccccured", msgError: true}});
+        if(user)
+            res.status(400).json({message : {msgBody : "Email is already taken", msgError: true}});
+        else{
+            const newUser = new Applicant({fullName, birthDate, email, grade, faculty, nationality});
+            newUser.save(err=>{
+                if(err)
+                    res.status(500).json({message : {msgBody : "Error has ooooooccured", msgError: true}});
+                else{
+                    res.status(201).json({message : {msgBody : "Successfully Applied! Check your email regularly!", msgError: false}});
+                }
+            });
+        }
+    });
+});
+
 
 userRouter.post('/login',passport.authenticate('local',{session : false}),(req,res)=>{
     if(req.isAuthenticated()){
