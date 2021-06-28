@@ -26,7 +26,7 @@ export default {
   },
   createSchedule: (user) => {
     console.log(user);
-    return fetch("/createSchedule", {
+    return fetch("/user/createSchedule", {
       method: "POST",
       body: JSON.stringify(user),
       headers: {

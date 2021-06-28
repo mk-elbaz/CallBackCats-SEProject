@@ -22,12 +22,6 @@ export default function Showschedule() {
 
   const [schedulesList, setscheduleList] = useState([]);
 
-const deleteschedule = (id) => {
-    axios.delete('http://localhost:5000/viewSchedule/' + id).then(() => {
-        window.location.reload(false); 
-    })
-}
-
   useEffect(() => {
     axios.get("http://localhost:5000/viewSchedule").then((allschedules) => {
       setscheduleList(allschedules.data);
@@ -60,9 +54,6 @@ const deleteschedule = (id) => {
                 <TableCell align="right">{schedule.third}</TableCell>
                 <TableCell align="right">{schedule.fourth}</TableCell>
                 <TableCell align="right">
-                  <IconButton aria-label="delete" className={classes.margin} onClick = {() => deleteschedule(schedule._id)}>
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

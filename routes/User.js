@@ -174,15 +174,6 @@ userRouter.post("/createSchedule", async (req, res) => {
   }
 });
 
-userRouter.delete("/:idd", async (req, res) => {
-  const idd = req.params.idd;
 
-  try {
-    await ScheduleData.findByIdAndRemove(idd).exec();
-    res.send("Schedule Deleted!");
-  } catch (error) {
-    console.log(error);
-  }
-});
 
 module.exports = userRouter;
