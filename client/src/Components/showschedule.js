@@ -8,6 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
+import AuthService from "../Services/AuthService";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -23,11 +24,12 @@ export default function Showschedule() {
   const [schedulesList, setscheduleList] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/viewSchedule").then((allschedules) => {
-      setscheduleList(allschedules.data);
+    AuthService.viewSchedule().then((data) => {
+      setscheduleList(data);
     });
   }, []);
 
+  
   return (
     <>
       <h2>Schedule</h2>
@@ -40,7 +42,6 @@ export default function Showschedule() {
               <TableCell align="right">Second</TableCell>
               <TableCell align="right">Third</TableCell>
               <TableCell align="right">Fourth</TableCell>
-              <TableCell align="right">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -53,8 +54,7 @@ export default function Showschedule() {
                 <TableCell align="right">{schedule.second}</TableCell>
                 <TableCell align="right">{schedule.third}</TableCell>
                 <TableCell align="right">{schedule.fourth}</TableCell>
-                <TableCell align="right">
-                </TableCell>
+                
               </TableRow>
             ))}
           </TableBody>

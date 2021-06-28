@@ -49,14 +49,13 @@ export default function Createschedule() {
 
   const classes = useStyles();
 
-  const Createschedules = () => {
+  const onSubmit = (e) => {
+    e.preventDefault();
     AuthService.createSchedule(schedule).then((data) => {
       const { message } = data;
       setMessage(message);
       resetForm();
-      if (!message.msgError) {
-        timerID = setTimeout(() => {}, 2000);
-      }
+      
     });
   };
 
@@ -133,7 +132,7 @@ export default function Createschedule() {
         
         
         <button className="btn btn-lg btn-primary btn-block" type="submit">
-          Register
+          Add Day
         </button>
       </form>
       {message ? <Message message={message} /> : null}

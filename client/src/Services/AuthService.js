@@ -24,6 +24,18 @@ export default {
       .then((response) => response.json())
       .then((data) => data);
   },
+  changePass: (user) => {
+    console.log(user);
+    return fetch("/user/changePass/:id", {
+      method: "PUT",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => data);
+  },
   createSchedule: (user) => {
     console.log(user);
     return fetch("/user/createSchedule", {
@@ -38,6 +50,11 @@ export default {
   },
   logout: () => {
     return fetch("/user/logout")
+      .then((res) => res.json())
+      .then((data) => data);
+  },
+  viewSchedule: () => {
+    return fetch("/user/viewSchedule")
       .then((res) => res.json())
       .then((data) => data);
   },

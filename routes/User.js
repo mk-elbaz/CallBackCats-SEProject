@@ -8,7 +8,6 @@ const User = require("../models/User");
 const Applicant = require("../models/Applicant");
 const ScheduleData = require("../models/schedule.js");
 
-
 const signToken = (userID) => {
   return JWT.sign(
     {
@@ -24,35 +23,27 @@ userRouter.post("/register", (req, res) => {
   const { username, password, role } = req.body;
   User.findOne({ username }, (err, user) => {
     if (err)
-      res
-        .status(500)
-        .json({
-          message: { msgBody: "Error has occccccccured", msgError: true },
-        });
+      res.status(500).json({
+        message: { msgBody: "Error has occccccccured", msgError: true },
+      });
     if (user)
-      res
-        .status(400)
-        .json({
-          message: { msgBody: "Username is already taken", msgError: true },
-        });
+      res.status(400).json({
+        message: { msgBody: "Username is already taken", msgError: true },
+      });
     else {
       const newUser = new User({ username, password, role });
       newUser.save((err) => {
         if (err)
-          res
-            .status(500)
-            .json({
-              message: { msgBody: "Error has ooooooccured", msgError: true },
-            });
+          res.status(500).json({
+            message: { msgBody: "Error has ooooooccured", msgError: true },
+          });
         else {
-          res
-            .status(201)
-            .json({
-              message: {
-                msgBody: "Account successfully created",
-                msgError: false,
-              },
-            });
+          res.status(201).json({
+            message: {
+              msgBody: "Account successfully created",
+              msgError: false,
+            },
+          });
         }
       });
     }
@@ -63,17 +54,13 @@ userRouter.post("/enroll", (req, res) => {
   const { fullName, birthDate, email, grade, faculty, nationality } = req.body;
   Applicant.findOne({ email }, (err, user) => {
     if (err)
-      res
-        .status(500)
-        .json({
-          message: { msgBody: "Error has occccccccured", msgError: true },
-        });
+      res.status(500).json({
+        message: { msgBody: "Error has occccccccured", msgError: true },
+      });
     if (user)
-      res
-        .status(400)
-        .json({
-          message: { msgBody: "Email is already taken", msgError: true },
-        });
+      res.status(400).json({
+        message: { msgBody: "Email is already taken", msgError: true },
+      });
     else {
       const newUser = new Applicant({
         fullName,
@@ -85,22 +72,35 @@ userRouter.post("/enroll", (req, res) => {
       });
       newUser.save((err) => {
         if (err)
-          res
-            .status(500)
-            .json({
-              message: { msgBody: "Error has ooooooccured", msgError: true },
-            });
+          res.status(500).json({
+            message: { msgBody: "Error has ooooooccured", msgError: true },
+          });
         else {
-          res
-            .status(201)
-            .json({
-              message: {
-                msgBody: "Successfully Applied! Check your email regularly!",
-                msgError: false,
-              },
-            });
+          res.status(201).json({
+            message: {
+              msgBody: "Successfully Applied! Check your email regularly!",
+              msgError: false,
+            },
+          });
         }
       });
+    }
+  });
+});
+
+userRouter.put("/changePass/:id", async function (req, res) {
+  const id = req.params.id;
+
+  //Making a user object to parse to the update function
+  let updatedUser = {};
+  updatedUser.password = req.body.password;
+
+  await User.findByIdAndUpdate(id, updatedUser, function (err, updatedData) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(updatedData);
+      //res.redirect or res.send whatever you want to do
     }
   });
 });
@@ -136,11 +136,9 @@ userRouter.get(
         .status(200)
         .json({ message: { msgBody: "You are an admin", msgError: false } });
     } else
-      res
-        .status(403)
-        .json({
-          message: { msgBody: "You're not an admin,go away", msgError: true },
-        });
+      res.status(403).json({
+        message: { msgBody: "You're not an admin,go away", msgError: true },
+      });
   }
 );
 
@@ -155,7 +153,7 @@ userRouter.get(
 
 userRouter.get("/viewSchedule", async (req, res) => {
   try {
-    const allSchedules = await ScheduleData.find();
+    const allSchedules = await ScheduleData.find({faculty : "CS"});
     res.status(200).json(allSchedules);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -173,7 +171,5 @@ userRouter.post("/createSchedule", async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 });
-
-
 
 module.exports = userRouter;
