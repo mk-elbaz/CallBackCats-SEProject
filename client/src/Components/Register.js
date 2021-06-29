@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import AuthService from "../Services/AuthService";
 import Message from "../Components/Message";
+import AuthService from "../Services/AuthService"
 
 const Register = (props) => {
-  const [user, setUser] = useState({ username: "", password: "", role: "" });
+  const [user, setUser] = useState({ displayName: "", username: "", password: "",passwordVerify: "", role: "" , major: undefined ,semester : undefined});
   const [message, setMessage] = useState(null);
   let timerID = useRef(null);
 
@@ -18,16 +18,17 @@ const Register = (props) => {
   };
 
   const resetForm = () => {
-    setUser({ username: "", password: "", role: "" });
+    setUser({ displayName: "", username: "", password: "",passwordVerify: "", role: "" , major: undefined ,semester : undefined});
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     AuthService.register(user).then((data) => {
+      console.log(data);
       const { message } = data;
       setMessage(message);
       resetForm();
-      if (!message.msgError) {
+      if (!message) {
         timerID = setTimeout(() => {
           props.history.push("/login");
         }, 2000);
@@ -39,6 +40,17 @@ const Register = (props) => {
     <div>
       <form onSubmit={onSubmit}>
         <h3>Please Register</h3>
+        <label htmlFor="displayName" className="sr-only">
+          Display Name:{" "}
+        </label>
+        <input
+          type="text"
+          name="displayName"
+          value={user.displayName}
+          onChange={onChange}
+          className="form-control"
+          placeholder="Enter Display Name"
+        />
         <label htmlFor="username" className="sr-only">
           Username:{" "}
         </label>
@@ -61,6 +73,17 @@ const Register = (props) => {
           className="form-control"
           placeholder="Enter Password"
         />
+        <label htmlFor="passwordVerify" className="sr-only">
+          Confirm Password:{" "}
+        </label>
+        <input
+          type="password"
+          name="passwordVerify"
+          value={user.passwordVerify}
+          onChange={onChange}
+          className="form-control"
+          placeholder="Enter Password Again"
+        />
         <label htmlFor="role" className="sr-only">
           Role:{" "}
         </label>
@@ -71,6 +94,22 @@ const Register = (props) => {
           onChange={onChange}
           className="form-control"
           placeholder="Enter role (admin/ta/student)"
+        />
+        <input
+          type="text"
+          name="major"
+          value={user.major}
+          onChange={onChange}
+          className="form-control"
+          placeholder="Enter Major (CS/ENG/BIS)"
+        />
+        <input
+          type="text"
+          name="semester"
+          value={user.semester}
+          onChange={onChange}
+          className="form-control"
+          placeholder="Enter Semester number"
         />
         <button className="btn btn-lg btn-primary btn-block" type="submit">
           Register

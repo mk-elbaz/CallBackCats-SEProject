@@ -1,3 +1,5 @@
+import Cookies from "js-cookie";
+
 export default {
   login: (user) => {
     console.log(user);

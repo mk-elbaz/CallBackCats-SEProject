@@ -1,23 +1,28 @@
 const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const mongoose = require('mongoose');
-const userRouter = require('./routes/User.js');
-const cors = require('cors')
+
+require('dotenv').config();
+
+const app = express();
+const port = process.env.PORT || 8080;
+
 app.use(cors());
 app.use(express.json());
-app.use(cookieParser());
 
-app.use('/user',userRouter);
-mongoose.connect('mongodb+srv://mkelbaz:nnkoko11@bazdb.0bthm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{useNewUrlParser : true,useUnifiedTopology: true},()=>{
-console.log('successfully connected to database');
-});
+const uri = process.env.ATLAS_URI;
+mongoose.connect(uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true  });
+const connection = mongoose.connection;
+connection.once('open', () => {
+  console.log("giuDB database connection established successfully");
+})
 
+const userRouter = require('./routes/user');
+app.use('/user', userRouter);
 
-mongoose.set('useFindAndModify' , false);
+const majorRouter = require('./routes/major');
+app.use('/major', majorRouter);
 
-
-app.listen(5000,()=>{
-    console.log('express server started');
+app.listen(port, () => {
+    console.log(`app is running on port ${port}`);
 });

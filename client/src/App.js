@@ -9,6 +9,14 @@ import ViewSchedule  from './Components/showschedule';
 import Student  from './Components/Student';
 import TA  from './Components/TA';
 import Enroll from './Components/Enroll';
+
+import CreateStudent from "./Components/create-student.component";
+import EditStudent from "./Components/edit-student.component";
+import EditCourse from "./Components/edit-course.component";
+import StudentList from "./Components/student-list.component";
+import CourseList from "./Components/course-list.component";
+import CreateCourse from "./Components/create-course.component";
+
 import ChangePassword from './Components/ChangePassword';
 import PrivateRoute from './hocs/PrivateRoute';
 import UnPrivateRoute from './hocs/UnPrivateRoute';
@@ -28,6 +36,15 @@ function App() {
       <UnPrivateRoute path="/enroll" component={Enroll}/>
       <PrivateRoute path="/admin" roles={["admin"]} component={Admin}/>
       <PrivateRoute path="/createSchedule" roles={["admin"]} component={CreateSchedule}/>
+
+      <PrivateRoute path="/create-student" roles={["admin"]} component={CreateStudent}/>
+      <PrivateRoute path="/create-course" roles={["admin"]} component={CreateCourse}/>
+      <PrivateRoute path="/course-list" roles={["admin"]} component={CourseList}/>
+      <PrivateRoute path="/student-list" roles={["ta"]} component={StudentList}/>
+      <PrivateRoute path="/edit-course" roles={["admin"]} component={EditCourse}/>
+      <PrivateRoute path="/edit-student" roles={["ta"]} component={EditStudent}/>
+      
+      
       <PrivateRoute path="/viewSchedule" roles={["student"]} component={ViewSchedule}/>
       <PrivateRoute path="/changePass" roles={["admin","ta","student"]} component={ChangePassword}/>
       <PrivateRoute path="/ta" roles={["ta"]} component={TA}/>
