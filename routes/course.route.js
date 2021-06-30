@@ -26,7 +26,7 @@ router.route("/").get((req, res) => {
       } else {
         res.json(data);
       }
-    });
+    }).sort({ semester : 1});
 });
 
 // Get Single course

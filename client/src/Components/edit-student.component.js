@@ -11,6 +11,7 @@ export default class EditStudent extends Component {
     this.onChangeStudentName = this.onChangeStudentName.bind(this);
     this.onChangeStudentEmail = this.onChangeStudentEmail.bind(this);
     this.onChangeStudentRollno = this.onChangeStudentRollno.bind(this);
+    this.onChangeGrade = this.onChangeGrade.bind(this);
     this.onChangeMajor = this.onChangeMajor.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
@@ -19,6 +20,7 @@ export default class EditStudent extends Component {
       name: '',
       email: '',
       rollno: '',
+      grade: 'N/A',
       major: ''
     }
   }
@@ -30,7 +32,8 @@ export default class EditStudent extends Component {
           name: res.data.name,
           email: res.data.email,    
           major: res.data.major,
-          rollno: res.data.rollno
+          rollno: res.data.rollno,
+          grade : res.data.grade
         });
       })
       .catch((error) => {
@@ -50,6 +53,10 @@ export default class EditStudent extends Component {
     this.setState({ rollno: e.target.value })
   }
 
+  onChangeGrade(e) {
+    this.setState({ grade: e.target.value })
+  }
+
   onChangeMajor(e) {
     this.setState({ major: e.target.value });
   }
@@ -62,7 +69,8 @@ export default class EditStudent extends Component {
       name: this.state.name,
       email: this.state.email,
       major: this.state.major,
-      rollno: this.state.rollno
+      rollno: this.state.rollno,
+      grade: this.state.grade
     };
 
     axios.put('http://localhost:5000/students/update-student/' + this.props.match.params.id, studentObject)
@@ -96,7 +104,16 @@ export default class EditStudent extends Component {
           <Form.Control type="text" value={this.state.rollno} onChange={this.onChangeStudentRollno} />
         </Form.Group>
 
-        <Form.Group controlId="Major">
+        <Form.Group controlId="Grade">
+            <Form.Label>Course Grade</Form.Label>
+            <Form.Control
+              type="text"
+              value={this.state.grade}
+              onChange={this.onChangeGrade}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="Major">
             <Form.Label>Major</Form.Label>
             <Form.Control
               type="text"

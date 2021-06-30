@@ -17,6 +17,10 @@ let studentSchema = new Schema({
   },
   major:{
     type: String
+  },
+  grade :{
+    type : String,
+    default : 'N/A'
   }
 }, {
     collection: 'students'
