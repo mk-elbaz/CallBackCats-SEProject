@@ -39,7 +39,7 @@ const ChangePass = (props) => {
     <div>
       <form onSubmit={onSubmit}>
         <h3>Please Change Your Pass</h3>
-        <label htmlFor="password" className="sr-only">
+        <label htmlFor="password" className="edit-link">
           Password:{" "}
         </label>
         <input

@@ -90,6 +90,7 @@ userRouter.post("/enroll", (req, res) => {
 
 userRouter.put("/changePass/:id", async function (req, res) {
   const id = req.params.id;
+  console.log(id);
 
   //Making a user object to parse to the update function
   let updatedUser = {};

@@ -6,6 +6,7 @@ import { AuthContext } from '../Context/AuthContext';
 const Navbar = props =>{
     const {isAuthenticated,user,setIsAuthenticated,setUser} = useContext(AuthContext);
     
+   
     const onClickLogoutHandler = ()=>{
         AuthService.logout().then(data=>{
             if(data.success){
@@ -94,11 +95,9 @@ const Navbar = props =>{
                 }  
                 {
                     user.role === "ta" || user.role === "admin" || user.role === "student" ? 
-                    <Link to="/changePass">
-                        <li className="nav-item nav-link">
-                            Change Password
-                        </li>
-                    </Link> : null
+                    <Link className="edit-link" to={"/changePass/" + user._id}>
+                        Edit
+                    </Link> :null
                 }  
                 <button type="button" 
                         className="btn btn-link nav-item nav-link" 
