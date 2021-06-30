@@ -1,84 +1,92 @@
-import React, { useState, useRef, useEffect } from "react";
-import AuthService from "../Services/AuthService";
-import Message from "../Components/Message";
+import axios from "axios";
+import Select from "react-select";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import AuthContext from "../Context/AuthContext";
 
-const Register = (props) => {
-  const [user, setUser] = useState({ username: "", password: "", role: "" });
-  const [message, setMessage] = useState(null);
-  let timerID = useRef(null);
+function Register() {
+  const [displayName, setDisplayName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordVerify, setPasswordVerify] = useState("");
+  const [role, setRole] = useState("");
 
-  useEffect(() => {
-    return () => {
-      clearTimeout(timerID);
-    };
-  }, []);
+  const { getLoggedIn } = useContext(AuthContext);
+  const history = useHistory();
 
-  const onChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
-
-  const resetForm = () => {
-    setUser({ username: "", password: "", role: "" });
-  };
-
-  const onSubmit = (e) => {
+  async function register(e) {
     e.preventDefault();
-    AuthService.register(user).then((data) => {
-      const { message } = data;
-      setMessage(message);
-      resetForm();
-      if (!message.msgError) {
-        timerID = setTimeout(() => {
-          props.history.push("/login");
-        }, 2000);
-      }
-    });
-  };
+
+    try {
+      const registerData = {
+        displayName,
+        username,
+        password,
+        passwordVerify,
+      };
+
+      await axios.post("http://localhost:5000/user/register", registerData);
+
+      await getLoggedIn();
+      history.push("/");
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  const optionsRole = [
+    {
+      key: "admin",
+      label: "admin",
+    },
+    {
+      key: "student",
+      label: "student",
+    },
+    {
+      key: "ta",
+      label: "ta",
+    },
+  ];
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        <h3>Please Register</h3>
-        <label htmlFor="username" className="sr-only">
-          Username:{" "}
-        </label>
+      <h1>Register a new account</h1>
+      <form onSubmit={register}>
         <input
           type="text"
-          name="username"
-          value={user.username}
-          onChange={onChange}
-          className="form-control"
-          placeholder="Enter Username"
+          placeholder=""
+          onChange={(e) => setDisplayName(e.target.value)}
+          value={displayName}
         />
-        <label htmlFor="password" className="sr-only">
-          Password:{" "}
-        </label>
+        <input
+          type="text"
+          placeholder="Username"
+          onChange={(e) => setUsername(e.target.value)}
+          value={username}
+        />
         <input
           type="password"
-          name="password"
-          value={user.password}
-          onChange={onChange}
-          className="form-control"
-          placeholder="Enter Password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
         />
-        <label htmlFor="role" className="sr-only">
-          Role:{" "}
-        </label>
         <input
-          type="text"
-          name="role"
-          value={user.role}
-          onChange={onChange}
-          className="form-control"
-          placeholder="Enter role (admin/ta/student)"
+          type="password"
+          placeholder="Verify your password"
+          onChange={(e) => setPasswordVerify(e.target.value)}
+          value={passwordVerify}
         />
-        <button className="btn btn-lg btn-primary btn-block" type="submit">
-          Register
-        </button>
+        <Select
+          name="role"
+          value={role}
+          onChange={setRole}
+          options={optionsRole}
+        ></Select>
+        <button type="submit">Register</button>
       </form>
-      {message ? <Message message={message} /> : null}
     </div>
   );
-};
+}
 
 export default Register;

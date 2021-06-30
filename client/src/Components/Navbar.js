@@ -1,21 +1,10 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import AuthService from "../Services/AuthService";
-import { AuthContext } from "../Context/AuthContext";
+import AuthContext from "../Context/AuthContext";
+import axios from 'axios'
 
 const Navbar = (props) => {
-  const { isAuthenticated, user, setIsAuthenticated, setUser } = useContext(
-    AuthContext
-  );
-
-  const onClickLogoutHandler = () => {
-    AuthService.logout().then((data) => {
-      if (data.success) {
-        setUser(data.user);
-        setIsAuthenticated(false);
-      }
-    });
-  };
+  const { loggedIn , getLoggedIn} = useContext(AuthContext);
 
   const unauthenticatedNavBar = () => {
     return (
@@ -36,6 +25,16 @@ const Navbar = (props) => {
     );
   };
 
+  async function logout() {
+    try {
+      await axios.get("http://localhost:5000/user/logout");
+
+      await getLoggedIn();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   const authenticatedNavBar = () => {
     return (
       <>
@@ -43,65 +42,64 @@ const Navbar = (props) => {
           <li className="nav-item nav-link">Home</li>
         </Link>
 
-        {user.role === "admin" ? (
+        {loggedIn === "admin" ? (
           <Link to="/admin">
             <li className="nav-item nav-link">Admin</li>
           </Link>
         ) : null}
-        {user.role === "admin" ? (
+        {loggedIn === "admin" ? (
           <Link to="/createSchedule">
             <li className="nav-item nav-link">Schedules</li>
           </Link>
         ) : null}
-        {user.role === "admin" ? (
+        {loggedIn === "admin" ? (
           <Link to="/create-student">
             <li className="nav-item nav-link">Create Student</li>
           </Link>
         ) : null}
-        {user.role === "admin" ? (
+        {loggedIn === "admin" ? (
           <Link to="/create-course">
             <li className="nav-item nav-link">Create Course</li>
           </Link>
         ) : null}
-        {user.role === "admin" || user.role === "student" ? (
+        {loggedIn === "admin" || loggedIn === "student" ? (
           <Link to="/course-list">
             <li className="nav-item nav-link">Courses List</li>
           </Link>
         ) : null}
-        {user.role === "ta" ? (
+        {loggedIn === "ta" ? (
           <Link to="/student-list">
             <li className="nav-item nav-link">Student List</li>
           </Link>
         ) : null}
-        {user.role === "student" ? (
+        {loggedIn === "student" ? (
           <Link to="/student">
             <li className="nav-item nav-link">Student</li>
           </Link>
         ) : null}
-        {user.role === "student" ? (
+        {loggedIn === "student" ? (
           <Link to="/viewSchedule">
             <li className="nav-item nav-link">View Schedule</li>
           </Link>
         ) : null}
-        {user.role === "ta" ? (
+        {loggedIn === "ta" ? (
           <Link to="/ta">
             <li className="nav-item nav-link">TA</li>
           </Link>
         ) : null}
-        {user.role === "ta" ||
-        user.role === "admin" ||
-        user.role === "student" ? (
+        {loggedIn === "ta" ||
+        loggedIn === "admin" ||
+        loggedIn === "student" ? (
           <Link to="/changePass">
             <li className="nav-item nav-link">Change Password</li>
           </Link>
         ) : null}
-        <button
-          type="button"
-          className="btn btn-link nav-item nav-link"
-          onClick={onClickLogoutHandler}
+        <Link
+          to="/"
+          onClick={logout}
         >
           Logout
-        </button>
+        </Link>
       </>
     );
   };
@@ -112,7 +110,7 @@ const Navbar = (props) => {
       </Link>
       <div className="collapse navbar-collapse" id="navbarText">
         <ul className="navbar-nav mr-auto">
-          {!isAuthenticated ? unauthenticatedNavBar() : authenticatedNavBar()}
+          {loggedIn === "" ? unauthenticatedNavBar() : authenticatedNavBar()}
         </ul>
       </div>
     </nav>

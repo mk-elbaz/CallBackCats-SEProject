@@ -1,56 +1,95 @@
 const express = require("express");
-const userRouter = express.Router();
+const router = express.Router();
 const app = express();
-const passport = require("passport");
-const passportConfig = require("../passport");
-const JWT = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Applicant = require("../models/Applicant");
 const ScheduleData = require("../models/schedule.js");
+const util = require("../util.js");
 
-const signToken = (userID) => {
-  return JWT.sign(
+
+
+router.post("/register", async (req, res) => {
+  try {
+    const { username, password, passwordVerify, role , major, semester} = req.body;
+
+    // validation
+    if (!username || !role || !password || !passwordVerify)
+      return res
+        .status(400)
+        .json({ errorMessage: "Please enter all required fields." });
+
+
+    if (password !== passwordVerify)
+      return res.status(400).json({
+        errorMessage: "Please enter the same password twice.",
+      });
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser)
+      return res.status(400).json({
+        errorMessage: "An account with this username already exists.",
+      });
+
+    // hash the password
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    // save a new user account to the db
+
+    if(!displayName)
     {
-      iss: "NoobCoder",
-      sub: userID,
-    },
-    "NoobCoder",
-    { expiresIn: "1h" }
-  );
-};
-
-userRouter.post("/register", (req, res) => {
-  const { username, password, role } = req.body;
-  User.findOne({ username }, (err, user) => {
-    if (err)
-      res.status(500).json({
-        message: { msgBody: "Error has occccccccured", msgError: true },
-      });
-    if (user)
-      res.status(400).json({
-        message: { msgBody: "Username is already taken", msgError: true },
-      });
-    else {
-      const newUser = new User({ username, password, role });
-      newUser.save((err) => {
-        if (err)
-          res.status(500).json({
-            message: { msgBody: "Error has ooooooccured", msgError: true },
-          });
-        else {
-          res.status(201).json({
-            message: {
-              msgBody: "Account successfully created",
-              msgError: false,
-            },
-          });
-        }
-      });
+        displayName = username;
     }
-  });
+    majorId = undefined;
+    if(major)
+    {
+        majorObj =  await Major.findOne({ major });
+        majorId = majorObj._id;
+    }
+    semesterId = undefined;
+    if(semester)
+    {
+        semesterObj =  await Semester.findOne({ semester });
+        semesterId = semesterObj._id;
+    }
+    const newUser = new User({
+      displayName,
+      username,
+      password:passwordHash,
+      role,
+      majorId,
+      semesterId
+    });
+
+    const savedUser = await newUser.save();
+
+    // sign the token
+
+    const token = jwt.sign(
+      {
+        user: savedUser._id,
+      },
+      process.env.JWT_SECRET
+    );
+
+    // send the token in a HTTP-only cookie
+
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        sameSite: "none"
+        ,secure: true
+      })
+      .send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
 });
 
-userRouter.post("/enroll", (req, res) => {
+router.post("/enroll", (req, res) => {
   const { fullName, birthDate, email, grade, faculty, nationality } = req.body;
   Applicant.findOne({ email }, (err, user) => {
     if (err)
@@ -88,124 +127,134 @@ userRouter.post("/enroll", (req, res) => {
   });
 });
 
-//60d8ee1c15c4d11d045db169
-/*
-userRouter.put(
-  "/changePass/",
-  passport.authenticate("jwt", { session: false }),
-  async function (req, res) {
-    console.log(req.headers.cookie.split(";")[1].split("=")[1]);
-    const token = req.headers.cookie.split(";")[1].split("=")[1];
-    if (!token) {
-      return res.json(false);
-    }
-    data = JWT.verify(token, "NoobCoder");
-    console.log("zzzzzzz" + data.user)
-    userId = data.user;
-    const existingUser = await User.find({ _id: userId });
-    const id = userId;
-    console.log("aaaaaaaaaa   " + existingUser);
 
-    //Making a user object to parse to the update function
-    let updatedUser = {};
-    updatedUser.password = req.body.password;
+// log in
 
-    await User.findByIdAndUpdate(id, updatedUser, function (err, updatedData) {
-      if (err) {
-        console.log("aaa" + err);
-      } else {
-        console.log("mmm.." + updatedData);
-        res.send();
-        //res.redirect or res.send whatever you want to do
-      }
-    });
+router.post("/login", async (req, res) => {
+  try {
+    const {username, password} = req.body;
+
+    // validation
+
+    if (!username || !password)
+      return res
+        .status(400)
+        .json({ errorMessage: "Please enter all required fields." });
+
+
+    const existingUser = await User.findOne({ username });
+    if (!existingUser)
+      return res.status(401).json({ errorMessage: "Wrong username or password." });
+    const passwordCorrect = await bcrypt.compare(
+      password,
+      existingUser.password
+    );
+    if (!passwordCorrect)
+      return res.status(401).json({ errorMessage: "Wrong username or password." });
+
+    // sign the token
+
+    const token = jwt.sign(
+      {
+        user: existingUser._id,
+      },
+      process.env.JWT_SECRET
+    );
+
+    // send the token in a HTTP-only cookie
+
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        sameSite: "none"
+        ,secure: true
+      })
+      .send();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
   }
-);
-*/
-
-
-
-userRouter.route("/changePass/").put((req, res, next) => {
-  console.log(req.params.id)
-  User.findByIdAndUpdate(
-    req.params.id,
-    {
-      $set: req.body,
-    },
-    (error, data) => {
-      if (error) {
-        console.log(error);
-        return next(error);
-        
-      } else {
-        res.json(data);
-        console.log("password updated successfully !");
-      }
-    }
-  );
 });
 
 
-/*
-studentRouter.put('/', (req: Request<StudentInterface>, res: Response) => {
-    if(req.body && req.body.dateOfBirth) {
-        const dateMomentObject = moment(req.body.dateOfBirth, "DD/MM/YYYY"); 
-        req.body.dateOfBirth = dateMomentObject.toISOString();
+router.put("/changePassword", util.checkLogin, async (req, res) => {
+  try {
+      const {password, newPassword, newPasswordVerify} = req.body;
+      if (!password || !newPassword || !newPasswordVerify)
+          return res
+           .status(400)
+           .json({ errorMessage: "Please enter all required fields." });
+
+      if (newPassword !== newPasswordVerify)
+          return res.status(400).json({
+          errorMessage: "Please enter the same password twice.",
+          });
+      
+      const existingUser = req.user;
+      const passwordCorrect = await bcrypt.compare(
+          password,
+          existingUser.password
+      );
+      if (!passwordCorrect)
+          return res.status(401).json({ errorMessage: "Wrong password." });
+
+      const salt = await bcrypt.genSalt();
+      const passwordHash = await bcrypt.hash(newPassword, salt);
+
+      await User.findOneAndUpdate({_id: existingUser._id}, {password:passwordHash});
+      
+      // sign the token
+
+      const token = jwt.sign(
+          {
+          user: existingUser._id,
+          },
+          process.env.JWT_SECRET
+      );
+
+    // send the token in a HTTP-only cookie
+
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        sameSite: "none"
+        ,secure: true
+      })
+      .send();
+  }
+  catch (err) {
+      console.error(err);
+      res.status(500).send();
     }
-    updateStudent(req, res);
 });
 
-*/
+router.get("/loggedIn", async (req, res) =>{
+try{
+  const token = req.cookies.token;
+  if (!token) res.json("");
+  data = jwt.verify(token, process.env.JWT_SECRET);
+  userId = data.user;
+  const existingUser = await User.findOne({ _id:userId });
+  res.json(existingUser.role);
+} catch (err) {
+  res.json("");
+}
+});
 
-userRouter.post(
-  "/login",
-  passport.authenticate("local", { session: false }),
-  (req, res) => {
-    if (req.isAuthenticated()) {
-      const { _id, username, role } = req.user;
-      
-      const token = signToken(_id);
-      
-      res.cookie("access_token", token, { httpOnly: true, sameSite: true });
-      res.status(200).json({ isAuthenticated: true, user: { username, role } });
-    }
-  }
-);
+router.get("/logout", (req, res) => {
+res
+  .cookie("token", "", {
+    httpOnly: true,
+    expires: new Date(0),
+    sameSite: "none"
+    ,secure: true
+  })
+  .send();
+});
 
-userRouter.get(
-  "/logout",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    res.clearCookie("access_token");
-    res.json({ user: { username: "", role: "" }, success: true });
-  }
-);
 
-userRouter.get(
-  "/admin",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    if (req.user.role === "admin") {
-      res
-        .status(200)
-        .json({ message: { msgBody: "You are an admin", msgError: false } });
-    } else
-      res.status(403).json({
-        message: { msgBody: "You're not an admin,go away", msgError: true },
-      });
-  }
-);
 
-userRouter.get(
-  "/authenticated",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const { username, role } = req.user;
-    res.status(200).json({ isAuthenticated: true, user: { username, role } });
-  }
-);
-
-userRouter.get("/viewSchedule", async (req, res) => {
+router.get("/viewSchedule", async (req, res) => {
   try {
     const allSchedules = await ScheduleData.find({ faculty: "CS" });
     res.status(200).json(allSchedules);
@@ -214,7 +263,7 @@ userRouter.get("/viewSchedule", async (req, res) => {
   }
 });
 
-userRouter.post("/createSchedule", async (req, res) => {
+router.post("/createSchedule", async (req, res) => {
   const schedule = req.body;
   const newSchedule = new ScheduleData(schedule);
 
@@ -226,4 +275,4 @@ userRouter.post("/createSchedule", async (req, res) => {
   }
 });
 
-module.exports = userRouter;
+module.exports = router;

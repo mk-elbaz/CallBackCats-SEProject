@@ -1,27 +1,28 @@
-import React, {createContext,useState,useEffect} from 'react';
-import AuthService from '../Services/AuthService';
+import axios from "axios";
+import React, { createContext, useEffect, useState } from "react";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
 
-export default ({ children })=>{
-    const [user,setUser] = useState(null);
-    const [isAuthenticated,setIsAuthenticated] = useState(false);
-    const [isLoaded,setIsLoaded] = useState(false);
+function AuthContextProvider(props) {
+  const [loggedIn, setLoggedIn] = useState("");
 
-    useEffect(()=>{
-        AuthService.isAuthenticated().then(data =>{
-            setUser(data.user);
-            setIsAuthenticated(data.isAuthenticated);
-            setIsLoaded(true);
-        });
-    },[]);
+  async function getLoggedIn() {
+    const loggedInRes = await axios.get(
+      "http://localhost:5000/user/loggedIn"
+    );
+    setLoggedIn(loggedInRes.data);
+  }
 
-    return (
-        <div>
-            {!isLoaded ? <h1>Loading</h1> : 
-            <AuthContext.Provider value={{user,setUser,isAuthenticated,setIsAuthenticated}}>
-                { children }
-            </AuthContext.Provider>}
-        </div>
-    )
+  useEffect(() => {
+    getLoggedIn();
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ loggedIn, getLoggedIn }}>
+      {props.children}
+    </AuthContext.Provider>
+  );
 }
+
+export { AuthContextProvider };
+export default AuthContext;

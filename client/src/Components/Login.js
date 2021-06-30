@@ -1,55 +1,53 @@
-import React, {useState,useContext} from 'react';
-import AuthService from '../Services/AuthService';
-import Message from '../Components/Message';
-import {AuthContext} from '../Context/AuthContext';
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import AuthContext from "../Context/AuthContext";
 
-const Login = props=>{
-    const [user,setUser] = useState({username: "", password : ""});
-    const [message,setMessage] = useState(null);
-    const authContext = useContext(AuthContext);
+function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-    const onChange = e =>{
-        setUser({...user,[e.target.name] : e.target.value});
+  const { loggedIn, getLoggedIn } = useContext(AuthContext);
+  const history = useHistory();
+
+  async function login(e) {
+    e.preventDefault();
+
+    try {
+      const loginData = {
+        username,
+        password,
+      };
+
+      await axios.post("http://localhost:5000/user/login", loginData);
+      
+      await getLoggedIn();
+      history.push("/");
+    } catch (err) {
+      console.error(err);
     }
+  }
 
-    const onSubmit = e =>{
-        e.preventDefault();
-        AuthService.login(user).then(data=>{
-            console.log(data);
-            const { isAuthenticated,user,message} = data;
-            if(isAuthenticated){
-                authContext.setUser(user);
-                authContext.setIsAuthenticated(isAuthenticated);
-            }
-            else
-                setMessage(message);
-        });
-    }
-
-
-
-    return(
-        <div>
-            <form onSubmit={onSubmit}>
-                <h3>Please sign in</h3>
-                <label htmlFor="username" className="sr-only">Username: </label>
-                <input type="text" 
-                       name="username" 
-                       onChange={onChange} 
-                       className="form-control" 
-                       placeholder="Enter Username"/>
-                <label htmlFor="password" className="sr-only">Password: </label>
-                <input type="password" 
-                       name="password" 
-                       onChange={onChange} 
-                       className="form-control" 
-                       placeholder="Enter Password"/>
-                <button className="btn btn-lg btn-primary btn-block" 
-                        type="submit">Log in </button>
-            </form>
-            {message ? <Message message={message}/> : null}
-        </div>
-    )
+  return (
+    <div>
+      <h1>Log in to your account</h1>
+      <form onSubmit={login}>
+        <input
+          type="text"
+          placeholder="Username"
+          onChange={(e) => setUsername(e.target.value)}
+          value={username}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+        />
+        <button type="submit">Log in</button>
+      </form>
+    </div>
+  );
 }
 
 export default Login;

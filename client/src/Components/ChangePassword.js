@@ -1,63 +1,63 @@
-import React, { useState, useRef, useEffect } from "react";
-import AuthService from "../Services/AuthService";
-import Message from "../Components/Message";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
+import AuthContext from "../Context/AuthContext";
 
-const ChangePass = (props) => {
-  const [user, setUser] = useState({password:""});
-  const [message, setMessage] = useState(null);
-  let timerID = useRef(null);
+function ChangePassword() {
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [newPasswordVerify, setNewPasswordVerify] = useState("");
 
-  useEffect(() => {
-    return () => {
-      clearTimeout(timerID);
-    };
-  }, []);
+  const { loggedIn, getLoggedIn } = useContext(AuthContext);
+  const history = useHistory();
 
-  const onChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
-
-  const resetForm = () => {
-    setUser({ password: ""});
-  };
-
-  const onSubmit = (e) => {
+  async function changePass(e) {
     e.preventDefault();
-    AuthService.changePass(user).then((data) => {
-      console.log("zewww " + data);
-      const { message } = data;
-      setMessage(message);
-      resetForm();
-      if (!message.msgError) {
-        timerID = setTimeout(() => {
-          props.history.push("/");
-        }, 2000);
-      }
-    });
-  };
+
+    try {
+      const changePassData = {
+        password,
+        newPassword,
+        newPasswordVerify
+      };
+
+      await axios.put("http://localhost:5000/user/changePassword", changePassData);
+      
+      await getLoggedIn();
+      history.push("/");
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        <h3>Please Change Your Pass</h3>
-        <label htmlFor="password" className="sr-only">
-          Password:{" "}
-        </label>
+      <h1>Log in to your account</h1>
+      <form onSubmit={changePass}>
+        
         <input
           type="password"
-          name="password"
-          value={user.password}
-          onChange={onChange}
-          className="form-control"
-          placeholder="Enter New Password"
+          placeholder="Password"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
         />
-        <button className="btn btn-lg btn-primary btn-block" type="submit">
-          Change Password
-        </button>
+        <input
+          type="password"
+          placeholder="New Password"
+          onChange={(e) => setNewPassword(e.target.value)}
+          value={newPassword}
+        />
+        <input
+          type="password"
+          placeholder="Confirm New Password"
+          onChange={(e) => setNewPasswordVerify(e.target.value)}
+          value={newPasswordVerify}
+        />
+
+        <button type="submit">Change Password</button>
       </form>
-      {message ? <Message message={message} /> : null}
     </div>
   );
-};
+}
 
-export default ChangePass;
+export default ChangePassword;
