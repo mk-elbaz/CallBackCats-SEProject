@@ -13,6 +13,7 @@ import Enroll from "./Components/Enroll";
 import CreateStudent from "./Components/create-student.component";
 import EditStudent from "./Components/edit-student.component";
 import EditCourse from "./Components/edit-course.component";
+import ViewCourse from "./Components/view-course.component";
 import StudentList from "./Components/student-list.component";
 import CourseList from "./Components/course-list.component";
 import CreateCourse from "./Components/create-course.component";
@@ -41,6 +42,11 @@ function App() {
         roles={["admin"]}
         component={EditCourse}
       />
+      <PrivateRoute
+        path="/view-course/:id"
+        roles={["admin","student"]}
+        component={ViewCourse}
+      />
       <PrivateRoute path="/admin" roles={["admin"]} component={Admin} />
       <PrivateRoute
         path="/createSchedule"
@@ -60,7 +66,7 @@ function App() {
       />
       <PrivateRoute
         path="/course-list"
-        roles={["admin"]}
+        roles={["admin","student"]}
         component={CourseList}
       />
       <PrivateRoute

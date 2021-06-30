@@ -63,7 +63,7 @@ const Navbar = (props) => {
             <li className="nav-item nav-link">Create Course</li>
           </Link>
         ) : null}
-        {user.role === "admin" ? (
+        {user.role === "admin" || user.role === "student" ? (
           <Link to="/course-list">
             <li className="nav-item nav-link">Courses List</li>
           </Link>

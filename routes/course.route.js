@@ -14,6 +14,16 @@ router.route("/create-course").post((req, res, next) => {
     } else {
       console.log(data);
       res.json(data);
+      console.log(req.body.id);
+      studentSchema.updateMany(
+        { major: req.body.major }, 
+        { $push: { courses: req.body.id } },function (error, success) {
+          if (error) {
+              console.log(error);
+          } else {
+              console.log(success);
+          }
+      });
     }
   });
 });
@@ -21,20 +31,28 @@ router.route("/create-course").post((req, res, next) => {
 // READ courses
 router.route("/").get((req, res) => {
   courseSchema
-    .find(
-      /*{name : 'CS'},*/ (error, data) => {
-        if (error) {
-          return next(error);
-        } else {
-          res.json(data);
-        }
+    .find({ major: "CS" }, (error, data) => {
+      if (error) {
+        return next(error);
+      } else {
+        res.json(data);
       }
-    )
+    })
     .sort({ semester: 1 });
 });
 
 // Get Single course
 router.route("/edit-course/:id").get((req, res, next) => {
+  courseSchema.findById(req.params.id, (error, data) => {
+    if (error) {
+      return next(error);
+    } else {
+      res.json(data);
+    }
+  });
+});
+
+router.route("/view-course/:id").get((req, res, next) => {
   courseSchema.findById(req.params.id, (error, data) => {
     if (error) {
       return next(error);

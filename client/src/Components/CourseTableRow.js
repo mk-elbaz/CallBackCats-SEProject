@@ -31,6 +31,9 @@ export default class CourseTableRow extends Component {
                     <Link className="edit-link" to={"/edit-course/" + this.props.obj._id}>
                         Edit
                     </Link>
+                    <Link className="view-link" to={"/view-course/" + this.props.obj._id}>
+                        View
+                    </Link>
                     <Button onClick={this.deleteCourse} size="sm" variant="danger">Delete</Button>
                 </td>
             </tr>

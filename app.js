@@ -19,6 +19,7 @@ console.log('successfully connected to database');
 console.log("----------------------------------------------------------------------------------------------")
 });
 
+mongoose.set('useFindAndModify' , false);
 
 
 app.listen(5000,()=>{

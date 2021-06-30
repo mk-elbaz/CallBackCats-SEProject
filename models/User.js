@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
     },
     faculty : {
         type : String,
-        default : "Eng"
+        default : "CS"
     }
 });
 
