@@ -1,6 +1,7 @@
 let mongoose = require("mongoose"),
   express = require("express"),
   router = express.Router();
+let studentSchema = require("../models/Student");
 
 // Course Model
 let courseSchema = require("../models/Course");
@@ -19,14 +20,17 @@ router.route("/create-course").post((req, res, next) => {
 
 // READ courses
 router.route("/").get((req, res) => {
-
-  courseSchema.find(/*{name : 'CS'},*/(error, data) => {
-      if (error) {
-        return next(error);
-      } else {
-        res.json(data);
+  courseSchema
+    .find(
+      /*{name : 'CS'},*/ (error, data) => {
+        if (error) {
+          return next(error);
+        } else {
+          res.json(data);
+        }
       }
-    }).sort({ semester : 1});
+    )
+    .sort({ semester: 1 });
 });
 
 // Get Single course
