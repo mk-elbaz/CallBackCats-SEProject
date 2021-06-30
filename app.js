@@ -12,6 +12,7 @@ app.use(cookieParser());
 app.use('/user',userRouter);
 mongoose.connect('mongodb+srv://mkelbaz:nnkoko11@bazdb.0bthm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{useNewUrlParser : true,useUnifiedTopology: true},()=>{
 console.log('successfully connected to database');
+console.log("------------------------------------------------------------------------------------------------------------------------------------")
 });
 
 

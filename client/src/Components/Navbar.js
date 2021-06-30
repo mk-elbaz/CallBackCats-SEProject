@@ -92,9 +92,11 @@ const Navbar = props =>{
                         </li>
                     </Link> : null
                 }  
+                
                 {
                     user.role === "ta" || user.role === "admin" || user.role === "student" ? 
-                    <Link to="/changePass">
+                    <Link to="/changePass/">
+                        
                         <li className="nav-item nav-link">
                             Change Password
                         </li>

@@ -3,7 +3,7 @@ import AuthService from "../Services/AuthService";
 import Message from "../Components/Message";
 
 const ChangePass = (props) => {
-  const [user, setUser] = useState({  password: ""});
+  const [user, setUser] = useState({password:""});
   const [message, setMessage] = useState(null);
   let timerID = useRef(null);
 
@@ -24,6 +24,7 @@ const ChangePass = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     AuthService.changePass(user).then((data) => {
+      console.log("zewww " + data);
       const { message } = data;
       setMessage(message);
       resetForm();

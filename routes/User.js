@@ -88,22 +88,72 @@ userRouter.post("/enroll", (req, res) => {
   });
 });
 
-userRouter.put("/changePass/:id", async function (req, res) {
-  const id = req.params.id;
+//60d8ee1c15c4d11d045db169
 
-  //Making a user object to parse to the update function
-  let updatedUser = {};
-  updatedUser.password = req.body.password;
-
-  await User.findByIdAndUpdate(id, updatedUser, function (err, updatedData) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(updatedData);
-      //res.redirect or res.send whatever you want to do
+userRouter.put(
+  "/changePass/",
+  passport.authenticate("jwt", { session: false }),
+  async function (req, res) {
+    console.log(req.headers.cookie.split(";")[1].split("=")[1]);
+    const token = req.headers.cookie.split(";")[1].split("=")[1];
+    if (!token) {
+      return res.json(false);
     }
-  });
+    data = JWT.verify(token, "NoobCoder");
+    console.log("zzzzzzz" + data.user)
+    userId = data.user;
+    const existingUser = await User.find({ _id: userId });
+    const id = userId;
+    console.log("aaaaaaaaaa   " + existingUser);
+
+    //Making a user object to parse to the update function
+    let updatedUser = {};
+    updatedUser.password = req.body.password;
+
+    await User.findByIdAndUpdate(id, updatedUser, function (err, updatedData) {
+      if (err) {
+        console.log("aaa" + err);
+      } else {
+        console.log("mmm.." + updatedData);
+        res.send();
+        //res.redirect or res.send whatever you want to do
+      }
+    });
+  }
+);
+
+/*
+userRouter.route("/changePass/").put((req, res, next) => {
+  console.log(req.params.id)
+  User.findByIdAndUpdate(
+    req.params.id,
+    {
+      $set: req.body,
+    },
+    (error, data) => {
+      if (error) {
+        console.log(error);
+        return next(error);
+        
+      } else {
+        res.json(data);
+        console.log("password updated successfully !");
+      }
+    }
+  );
 });
+*/
+
+/*
+studentRouter.put('/', (req: Request<StudentInterface>, res: Response) => {
+    if(req.body && req.body.dateOfBirth) {
+        const dateMomentObject = moment(req.body.dateOfBirth, "DD/MM/YYYY"); 
+        req.body.dateOfBirth = dateMomentObject.toISOString();
+    }
+    updateStudent(req, res);
+});
+
+*/
 
 userRouter.post(
   "/login",
@@ -111,8 +161,20 @@ userRouter.post(
   (req, res) => {
     if (req.isAuthenticated()) {
       const { _id, username, role } = req.user;
-      const token = signToken(_id);
-      res.cookie("access_token", token, { httpOnly: true, sameSite: true });
+      const token = JWT.sign(
+        {
+          user: existingUser._id,
+        },
+        "NoobCoder"
+      );
+      //const token = signToken(_id);
+      res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        sameSite: "none",
+      })
+      .send();
+     // res.cookie("access_token", token, { httpOnly: true, sameSite: true });
       res.status(200).json({ isAuthenticated: true, user: { username, role } });
     }
   }
@@ -153,7 +215,7 @@ userRouter.get(
 
 userRouter.get("/viewSchedule", async (req, res) => {
   try {
-    const allSchedules = await ScheduleData.find({faculty : "CS"});
+    const allSchedules = await ScheduleData.find({ faculty: "CS" });
     res.status(200).json(allSchedules);
   } catch (error) {
     res.status(404).json({ message: error.message });
