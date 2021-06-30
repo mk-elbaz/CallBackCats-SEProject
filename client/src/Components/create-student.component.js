@@ -51,7 +51,7 @@ export default class CreateStudent extends Component {
 
     };
 
-    axios.post('http://localhost:8080/students/create-student', studentObject)
+    axios.post('http://localhost:5000/students/create-student', studentObject)
       .then(res => console.log(res.data));
 
     this.setState({

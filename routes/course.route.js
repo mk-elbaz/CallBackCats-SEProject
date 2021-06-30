@@ -30,7 +30,7 @@ router.route("/").get((req, res) => {
 });
 
 // Get Single course
-router.route("/edit-course/:id").get((req, res) => {
+router.route("/edit-course/:id").get((req, res, next) => {
   courseSchema.findById(req.params.id, (error, data) => {
     if (error) {
       return next(error);

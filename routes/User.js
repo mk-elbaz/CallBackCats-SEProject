@@ -163,20 +163,10 @@ userRouter.post(
   (req, res) => {
     if (req.isAuthenticated()) {
       const { _id, username, role } = req.user;
-      const token = JWT.sign(
-        {
-          user: existingUser._id,
-        },
-        "NoobCoder"
-      );
-      //const token = signToken(_id);
-      res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        sameSite: "none",
-      })
-      .send();
-     // res.cookie("access_token", token, { httpOnly: true, sameSite: true });
+      
+      const token = signToken(_id);
+      
+      res.cookie("access_token", token, { httpOnly: true, sameSite: true });
       res.status(200).json({ isAuthenticated: true, user: { username, role } });
     }
   }

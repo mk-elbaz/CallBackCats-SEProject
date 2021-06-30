@@ -14,7 +14,7 @@ export default class CourseList extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8080/courses/')
+    axios.get('http://localhost:5000/courses/')
       .then(res => {
         this.setState({
           courses: res.data

@@ -30,6 +30,17 @@ function App() {
       <UnPrivateRoute path="/login" component={Login} />
       <UnPrivateRoute path="/register" component={Register} />
       <UnPrivateRoute path="/enroll" component={Enroll} />
+
+      <PrivateRoute
+        path="/edit-student/:id"
+        roles={["ta"]}
+        component={EditStudent}
+      />
+      <PrivateRoute
+        path="/edit-course/:id"
+        roles={["admin"]}
+        component={EditCourse}
+      />
       <PrivateRoute path="/admin" roles={["admin"]} component={Admin} />
       <PrivateRoute
         path="/createSchedule"
@@ -57,16 +68,7 @@ function App() {
         roles={["ta"]}
         component={StudentList}
       />
-      <PrivateRoute
-        path="/edit-course"
-        roles={["admin"]}
-        component={EditCourse}
-      />
-      <PrivateRoute
-        path="/edit-student"
-        roles={["ta"]}
-        component={EditStudent}
-      />
+      
 
       <PrivateRoute
         path="/viewSchedule"

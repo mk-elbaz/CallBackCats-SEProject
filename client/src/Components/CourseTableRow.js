@@ -11,7 +11,7 @@ export default class CourseTableRow extends Component {
     }
 
     deleteCourse() {
-        axios.delete('http://localhost:8080/courses/delete-course/' + this.props.obj._id)
+        axios.delete('http://localhost:5000/courses/delete-course/' + this.props.obj._id)
             .then((res) => {
                 console.log('Course successfully deleted!')
             }).catch((error) => {
