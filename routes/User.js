@@ -89,7 +89,7 @@ userRouter.post("/enroll", (req, res) => {
 });
 
 //60d8ee1c15c4d11d045db169
-
+/*
 userRouter.put(
   "/changePass/",
   passport.authenticate("jwt", { session: false }),
@@ -121,8 +121,10 @@ userRouter.put(
     });
   }
 );
+*/
 
-/*
+
+
 userRouter.route("/changePass/").put((req, res, next) => {
   console.log(req.params.id)
   User.findByIdAndUpdate(
@@ -142,7 +144,7 @@ userRouter.route("/changePass/").put((req, res, next) => {
     }
   );
 });
-*/
+
 
 /*
 studentRouter.put('/', (req: Request<StudentInterface>, res: Response) => {
