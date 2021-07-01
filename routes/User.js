@@ -212,9 +212,9 @@ userRouter.get(
   }
 );
 
-userRouter.get("/viewSchedule", async (req, res) => {
+userRouter.get("/viewSchedule", passport.authenticate("jwt", { session: false }), async (req, res) => {
   try {
-    const allSchedules = await ScheduleData.find({ faculty: "CS" });
+    const allSchedules = await ScheduleData.find({ faculty: req.user.faculty});
     res.status(200).json(allSchedules);
   } catch (error) {
     res.status(404).json({ message: error.message });
