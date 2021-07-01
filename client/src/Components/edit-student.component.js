@@ -28,7 +28,7 @@ export default class EditStudent extends Component {
         this.setState({
           username: res.data.username,
           faculty: res.data.faculty,
-          grade: res.data.grade,
+          grade: res.data.courseGrade[0].grade,
         });
       })
       .catch((error) => {

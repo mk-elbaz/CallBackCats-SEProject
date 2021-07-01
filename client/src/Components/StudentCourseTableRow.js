@@ -3,21 +3,24 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 
-export default class StudentTableRow extends Component {
+export default class CourseTableRow extends Component {
 
     constructor(props) {
         super(props);
     }
 
+   
+
     render() {
         return (
             <tr>
-                <td>{this.props.obj.username}</td>
-                <td>{this.props.obj.courseGrade[0].grade}</td>
-                <td>{this.props.obj.faculty}</td>
+                <td>{this.props.obj.name}</td>
+                <td>{this.props.obj.id}</td>
+                <td>{this.props.obj.major}</td>
+                <td>{this.props.obj.semester}</td>
                 <td>
-                    <Link className="edit-link" to={"/edit-student/" + this.props.obj._id}>
-                        Edit
+                    <Link className="stu-link" to={"/studentCourseGrade"}>
+                        View
                     </Link>
                 </td>
             </tr>

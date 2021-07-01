@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
-import StudentTableRow from "./StudentTableRow";
+import StudentTableRow from "./StudentGradeTableRow";
 import AuthService from "../Services/AuthService";
 
 export default class StudentList extends Component {
@@ -13,9 +13,8 @@ export default class StudentList extends Component {
   }
 
   componentDidMount() {
-    AuthService.viewStudents()
+    AuthService.viewCourseGradeStud()
       .then((data) => {
-        console.log(data)
         this.setState({
           students: data,
         });
@@ -37,10 +36,8 @@ export default class StudentList extends Component {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Username</th>
+              <th>Course Name</th>
               <th>Grade</th>
-              <th>Faculty</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>{this.DataTable()}</tbody>

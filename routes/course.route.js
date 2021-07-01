@@ -14,34 +14,10 @@ router.route("/create-course").post((req, res, next) => {
     if (error) {
       return next(error);
     } else {
-      console.log(data);
       res.json(data);
-      console.log(req.body.id);
-     /* userSchema.updateMany(
-        { major: req.body.major },
-        { $push: { courses: req.body.id } },
-        function (error, success) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log(success);
-          }
-        }
-      );*/
-      userSchema.updateMany(
-        { faculty: req.body.major, role: "ta" },
-        { $push: { courses: req.body.id } },
-        function (error, success) {
-          if (error) {
-            console.log(error);
-          } else {
-            console.log(success);
-          }
-        }
-      );
       userSchema.updateMany(
         { faculty: req.body.major, role: "student" },
-        { $push: { courses: req.body.id , grade: "N/A"} },
+        { $push: { courseGrade: { course: req.body.name, grade: "N/A" } } },
         function (error, success) {
           if (error) {
             console.log(error);
@@ -54,6 +30,9 @@ router.route("/create-course").post((req, res, next) => {
   });
 });
 
+
+
+
 // READ courses
 //router.route("/").get(
 
@@ -61,7 +40,17 @@ router.get(
   "/",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
-    if (req.user.role !== "admin") {
+    if (req.user.role === "ta") {
+      courseSchema
+        .find({ major: req.user.faculty }, (error, data) => {
+          if (error) {
+            return next(error);
+          } else {
+            res.json(data);
+          }
+        })
+        .sort({ semester: 1 });
+    } else if (req.user.role === "student") {
       courseSchema
         .find({ major: req.user.faculty }, (error, data) => {
           if (error) {
@@ -84,6 +73,24 @@ router.get(
     }
   }
 );
+
+
+
+router.get(
+  "/viewCourseGrade",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+      userSchema
+        .find({ _id: req.user._id }, (error, data) => {
+          if (error) {
+            return next(error);
+          } else {
+            res.json(data);
+          }
+        })
+  }
+);
+
 
 // Get Single course
 router.route("/edit-course/:id").get((req, res, next) => {

@@ -63,11 +63,6 @@ const Navbar = (props) => {
             <li className="nav-item nav-link">Courses List</li>
           </Link>
         ) : null}
-        {user.role === "ta" ? (
-          <Link to="/student-list">
-            <li className="nav-item nav-link">Student List</li>
-          </Link>
-        ) : null}
         {user.role === "student" ? (
           <Link to="/student">
             <li className="nav-item nav-link">Student</li>
@@ -78,9 +73,19 @@ const Navbar = (props) => {
             <li className="nav-item nav-link">View Schedule</li>
           </Link>
         ) : null}
+        {user.role === "student" ? (
+          <Link to="/studentCourses">
+            <li className="nav-item nav-link">Courses List</li>
+          </Link>
+        ) : null}
         {user.role === "ta" ? (
           <Link to="/ta">
             <li className="nav-item nav-link">TA</li>
+          </Link>
+        ) : null}
+        {user.role === "ta" ? (
+          <Link to="/taCourses">
+            <li className="nav-item nav-link">Courses List</li>
           </Link>
         ) : null}
         {user.role === "ta" ||

@@ -7,6 +7,9 @@ import Admin from "./Components/Admin";
 import CreateSchedule from "./Components/createschedule";
 import ViewSchedule from "./Components/showschedule";
 import Student from "./Components/Student";
+import StudentCourses from "./Components/StudentCoursesList";
+import StudentGrade from "./Components/StudentGrade";
+import TACourses from "./Components/TACourseList";
 import TA from "./Components/TA";
 import Enroll from "./Components/Enroll";
 
@@ -43,7 +46,7 @@ function App() {
       />
       <PrivateRoute
         path="/view-course/:id"
-        roles={["admin","student"]}
+        roles={["admin", "student"]}
         component={ViewCourse}
       />
       <PrivateRoute path="/admin" roles={["admin"]} component={Admin} />
@@ -52,8 +55,22 @@ function App() {
         roles={["admin"]}
         component={CreateSchedule}
       />
+      <PrivateRoute
+        path="/studentCourseGrade"
+        roles={["student"]}
+        component={StudentGrade}
+      />
+      <PrivateRoute
+        path="/studentCourses"
+        roles={["student"]}
+        component={StudentCourses}
+      />
+      <PrivateRoute
+        path="/taCourses"
+        roles={["ta"]}
+        component={TACourses}
+      />
 
-      
       <PrivateRoute
         path="/create-course"
         roles={["admin"]}
@@ -61,7 +78,7 @@ function App() {
       />
       <PrivateRoute
         path="/course-list"
-        roles={["admin","student"]}
+        roles={["admin"]}
         component={CourseList}
       />
       <PrivateRoute
@@ -69,7 +86,6 @@ function App() {
         roles={["ta"]}
         component={StudentList}
       />
-      
 
       <PrivateRoute
         path="/viewSchedule"

@@ -1,23 +1,22 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Table from "react-bootstrap/Table";
-import StudentTableRow from "./StudentTableRow";
+import TACourseTableRow from "./TACourseTableRow";
 import AuthService from "../Services/AuthService";
 
-export default class StudentList extends Component {
+export default class CourseList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      students: [],
+      courses: [],
     };
   }
 
   componentDidMount() {
-    AuthService.viewStudents()
+    AuthService.viewCourses()
       .then((data) => {
-        console.log(data)
         this.setState({
-          students: data,
+          courses: data,
         });
       })
       .catch((error) => {
@@ -26,8 +25,8 @@ export default class StudentList extends Component {
   }
 
   DataTable() {
-    return this.state.students.map((res, i) => {
-      return <StudentTableRow obj={res} key={i} />;
+    return this.state.courses.map((res, i) => {
+      return <TACourseTableRow obj={res} key={i} />;
     });
   }
 
@@ -37,9 +36,10 @@ export default class StudentList extends Component {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th>Username</th>
-              <th>Grade</th>
-              <th>Faculty</th>
+              <th>Name</th>
+              <th>ID</th>
+              <th>Major</th>
+              <th>Semester</th>
               <th>Action</th>
             </tr>
           </thead>

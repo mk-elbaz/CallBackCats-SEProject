@@ -35,6 +35,11 @@ export default {
       .then((res) => res.json())
       .then((data) => data);
   },
+  viewCourseGradeStud: () => {
+    return fetch("/user/viewCourseGrade")
+      .then((res) => res.json())
+      .then((data) => data);
+  },
   viewStudents: () => {
     return fetch("/user/")
       .then((res) => res.json())
