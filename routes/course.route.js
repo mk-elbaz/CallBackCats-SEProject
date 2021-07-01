@@ -17,7 +17,7 @@ router.route("/create-course").post((req, res, next) => {
       console.log(data);
       res.json(data);
       console.log(req.body.id);
-      studentSchema.updateMany(
+     /* userSchema.updateMany(
         { major: req.body.major },
         { $push: { courses: req.body.id } },
         function (error, success) {
@@ -27,7 +27,7 @@ router.route("/create-course").post((req, res, next) => {
             console.log(success);
           }
         }
-      );
+      );*/
       userSchema.updateMany(
         { faculty: req.body.major, role: "ta" },
         { $push: { courses: req.body.id } },
@@ -41,7 +41,7 @@ router.route("/create-course").post((req, res, next) => {
       );
       userSchema.updateMany(
         { faculty: req.body.major, role: "student" },
-        { $push: { courses: req.body.id } },
+        { $push: { courses: req.body.id , grade: "N/A"} },
         function (error, success) {
           if (error) {
             console.log(error);
