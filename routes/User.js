@@ -7,6 +7,8 @@ const JWT = require("jsonwebtoken");
 const User = require("../models/User");
 const Applicant = require("../models/Applicant");
 const ScheduleData = require("../models/schedule.js");
+const bcrypt = require('bcrypt');
+
 
 const signToken = (userID) => {
   return JWT.sign(
@@ -123,28 +125,30 @@ userRouter.put(
 );
 */
 
-
-
-userRouter.route("/changePass/").put((req, res, next) => {
-  console.log(req.params.id)
-  User.findByIdAndUpdate(
-    req.params.id,
-    {
-      $set: req.body,
-    },
-    (error, data) => {
-      if (error) {
-        console.log(error);
-        return next(error);
-        
-      } else {
-        res.json(data);
-        console.log("password updated successfully !");
+userRouter.put(
+  "/changePass",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    console.log(req.body);  
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(req.body.password, salt);
+    User.findOneAndUpdate(
+      {_id :req.user.id},
+      {
+        password: passwordHash,
+      },
+      (error, data) => {
+        if (error) {
+          console.log(error);
+          return next(error);
+        } else {
+          res.json(data);
+          console.log("Password updated successfully !");
+        }
       }
-    }
-  );
-});
-
+    );
+  }
+);
 
 /*
 studentRouter.put('/', (req: Request<StudentInterface>, res: Response) => {
@@ -163,9 +167,9 @@ userRouter.post(
   (req, res) => {
     if (req.isAuthenticated()) {
       const { _id, username, role } = req.user;
-      
+
       const token = signToken(_id);
-      
+
       res.cookie("access_token", token, { httpOnly: true, sameSite: true });
       res.status(200).json({ isAuthenticated: true, user: { username, role } });
     }

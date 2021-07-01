@@ -14,7 +14,7 @@ const ChangePass = (props) => {
   }, []);
 
   const onChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    setUser({ ...user, password: e.target.value });
   };
 
   const resetForm = () => {
@@ -24,15 +24,7 @@ const ChangePass = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     AuthService.changePass(user).then((data) => {
-      console.log("zewww " + data);
-      const { message } = data;
-      setMessage(message);
-      resetForm();
-      if (!message.msgError) {
-        timerID = setTimeout(() => {
-          props.history.push("/");
-        }, 2000);
-      }
+      props.history.push("/logout")
     });
   };
 

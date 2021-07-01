@@ -26,7 +26,7 @@ export default {
   },
   changePass: (user) => {
     console.log(user);
-    return fetch("/user/changePass/", {
+    return fetch("/user/changePass", {
       method: "PUT",
       body: JSON.stringify(user),
       headers: {
