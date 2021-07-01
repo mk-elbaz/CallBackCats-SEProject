@@ -30,9 +30,6 @@ router.route("/create-course").post((req, res, next) => {
   });
 });
 
-
-
-
 // READ courses
 //router.route("/").get(
 
@@ -74,23 +71,20 @@ router.get(
   }
 );
 
-
-
 router.get(
-  "/viewCourseGrade",
+  "/viewCourseGrade/:name",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
-      userSchema
-        .find({ _id: req.user._id }, (error, data) => {
-          if (error) {
-            return next(error);
-          } else {
-            res.json(data);
-          }
-        })
+    console.log(req.user);
+    userSchema.find({ _id: req.user._id }, (error, data) => {
+      if (error) {
+        return next(error);
+      } else {
+        res.json(data);
+      }
+    });
   }
 );
-
 
 // Get Single course
 router.route("/edit-course/:id").get((req, res, next) => {

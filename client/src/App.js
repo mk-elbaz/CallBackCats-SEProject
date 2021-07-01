@@ -56,7 +56,7 @@ function App() {
         component={CreateSchedule}
       />
       <PrivateRoute
-        path="/studentCourseGrade"
+        path="/studentCourseGrade/:name"
         roles={["student"]}
         component={StudentGrade}
       />

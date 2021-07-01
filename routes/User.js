@@ -105,40 +105,28 @@ userRouter.get(
 );
 
 // Get Single Student
-userRouter.get(
-  "/edit-student/:id",
-  (req, res) => {
-    User.findById(req.params.id, (error, data) => {
-        if (error) {
-          return next(error);
-        } else {
-          res.json(data);
-        }
-      }
-    );
-  }
-);
+userRouter.get("/edit-student/:id", (req, res) => {
+  User.findById(req.params.id, (error, data) => {
+    if (error) {
+      return next(error);
+    } else {
+      res.json(data);
+    }
+  });
+});
 
 // Update Student
-userRouter.put(
-  "/update-student/:id",
-  async (req, res, next) => {
-    User.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: req.body,
-      },
-      (error, data) => {
-        if (error) {
-          return next(error);
-        } else {
-          res.json(data);
-          console.log("Student updated successfully !");
-        }
-      }
-    );
-  }
-);
+userRouter.put("/update-student/:id", async (req, res, next) => {
+  User.find({ _id: req.params.id }, (error, data) => {
+    if (error) {
+      return next(error);
+    } else {
+      console.log(data[0].courseGrade.grade);
+      res.json(data);
+      console.log("Student updated successfully !");
+    }
+  });
+});
 
 userRouter.put(
   "/changePass",
@@ -212,14 +200,20 @@ userRouter.get(
   }
 );
 
-userRouter.get("/viewSchedule", passport.authenticate("jwt", { session: false }), async (req, res) => {
-  try {
-    const allSchedules = await ScheduleData.find({ faculty: req.user.faculty});
-    res.status(200).json(allSchedules);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+userRouter.get(
+  "/viewSchedule",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const allSchedules = await ScheduleData.find({
+        faculty: req.user.faculty,
+      });
+      res.status(200).json(allSchedules);
+    } catch (error) {
+      res.status(404).json({ message: error.message });
+    }
   }
-});
+);
 
 userRouter.post("/createSchedule", async (req, res) => {
   const schedule = req.body;

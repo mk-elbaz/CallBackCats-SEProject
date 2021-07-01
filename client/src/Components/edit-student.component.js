@@ -29,6 +29,7 @@ export default class EditStudent extends Component {
           username: res.data.username,
           faculty: res.data.faculty,
           grade: res.data.courseGrade[0].grade,
+          course: res.data.courseGrade[0].course,
         });
       })
       .catch((error) => {
@@ -44,6 +45,7 @@ export default class EditStudent extends Component {
     e.preventDefault();
     const studentObject = {
       grade: this.state.grade,
+      course: this.state.course,
     };
 
     axios

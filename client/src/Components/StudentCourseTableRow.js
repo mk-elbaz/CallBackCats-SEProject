@@ -19,7 +19,7 @@ export default class CourseTableRow extends Component {
                 <td>{this.props.obj.major}</td>
                 <td>{this.props.obj.semester}</td>
                 <td>
-                    <Link className="stu-link" to={"/studentCourseGrade"}>
+                    <Link className="stu-link" to={"/studentCourseGrade/" + this.props.obj.name}>
                         View
                     </Link>
                 </td>
