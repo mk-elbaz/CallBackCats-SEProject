@@ -94,10 +94,8 @@ const Navbar = (props) => {
             <li className="nav-item nav-link">Change Password</li>
           </Link>
         ) : null}
-        <Link
-          to="/"
-          onClick={logout}
-        >
+        
+        <Link to="/" onClick={logout}>
           Logout
         </Link>
       </>
