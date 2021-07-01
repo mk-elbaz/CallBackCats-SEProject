@@ -55,7 +55,7 @@ export default class CreateCourse extends Component {
       semester: this.state.semester
     };
 
-    axios.post("http://localhost:5000/courses/create-course", courseObject).then((res) => console.log(res.data));
+    axios.post("http://localhost:8080/courses/create-course", courseObject).then((res) => console.log(res.data));
 
     this.setState({
       name: '',

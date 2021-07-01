@@ -20,7 +20,7 @@ export default class EditCourse extends Component {
   componentDidMount() {
     axios
       .get(
-        "http://localhost:5000/courses/view-course/" +
+        "http://localhost:8080/courses/view-course/" +
           this.props.match.params.id
       )
       .then((res) => {

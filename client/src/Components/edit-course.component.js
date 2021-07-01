@@ -27,7 +27,7 @@ export default class EditCourse extends Component {
   componentDidMount() {
     axios
       .get(
-        "http://localhost:5000/courses/edit-course/" +
+        "http://localhost:8080/courses/edit-course/" +
           this.props.match.params.id
       )
       .then((res) => {
@@ -76,7 +76,7 @@ export default class EditCourse extends Component {
 
     axios
       .put(
-        "http://localhost:5000/courses/update-course/" +
+        "http://localhost:8080/courses/update-course/" +
           this.props.match.params.id,
         courseObject
       )
