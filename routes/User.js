@@ -158,7 +158,6 @@ userRouter.put(
           return next(error);
         } else {
           res.json(data);
-          console.log("Password updated successfully !");
         }
       }
     );

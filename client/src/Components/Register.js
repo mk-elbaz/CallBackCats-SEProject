@@ -24,6 +24,7 @@ const Register = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     AuthService.register(user).then((data) => {
+
       const { message } = data;
       setMessage(message);
       resetForm();
