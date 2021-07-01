@@ -1,7 +1,9 @@
 let mongoose = require("mongoose"),
   express = require("express"),
   router = express.Router();
-let studentSchema = require("../models/Student");
+let userSchema = require("../models/User");
+const passport = require("passport");
+const JWT = require("jsonwebtoken");
 
 // Course Model
 let courseSchema = require("../models/Course");
@@ -16,30 +18,72 @@ router.route("/create-course").post((req, res, next) => {
       res.json(data);
       console.log(req.body.id);
       studentSchema.updateMany(
-        { major: req.body.major }, 
-        { $push: { courses: req.body.id } },function (error, success) {
+        { major: req.body.major },
+        { $push: { courses: req.body.id } },
+        function (error, success) {
           if (error) {
-              console.log(error);
+            console.log(error);
           } else {
-              console.log(success);
+            console.log(success);
           }
-      });
+        }
+      );
+      userSchema.updateMany(
+        { faculty: req.body.major, role: "ta" },
+        { $push: { courses: req.body.id } },
+        function (error, success) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(success);
+          }
+        }
+      );
+      userSchema.updateMany(
+        { faculty: req.body.major, role: "student" },
+        { $push: { courses: req.body.id } },
+        function (error, success) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(success);
+          }
+        }
+      );
     }
   });
 });
 
 // READ courses
-router.route("/").get((req, res) => {
-  courseSchema
-    .find({ major: "CS" }, (error, data) => {
-      if (error) {
-        return next(error);
-      } else {
-        res.json(data);
-      }
-    })
-    .sort({ semester: 1 });
-});
+//router.route("/").get(
+
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res, next) => {
+    if (req.user.role !== "admin") {
+      courseSchema
+        .find({ major: req.user.faculty }, (error, data) => {
+          if (error) {
+            return next(error);
+          } else {
+            res.json(data);
+          }
+        })
+        .sort({ semester: 1 });
+    } else {
+      courseSchema
+        .find((error, data) => {
+          if (error) {
+            return next(error);
+          } else {
+            res.json(data);
+          }
+        })
+        .sort({ semester: 1 });
+    }
+  }
+);
 
 // Get Single course
 router.route("/edit-course/:id").get((req, res, next) => {

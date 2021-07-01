@@ -7,8 +7,7 @@ const JWT = require("jsonwebtoken");
 const User = require("../models/User");
 const Applicant = require("../models/Applicant");
 const ScheduleData = require("../models/schedule.js");
-const bcrypt = require('bcrypt');
-
+const bcrypt = require("bcrypt");
 
 const signToken = (userID) => {
   return JWT.sign(
@@ -16,28 +15,27 @@ const signToken = (userID) => {
       iss: "NoobCoder",
       sub: userID,
     },
-    "NoobCoder",
-    { expiresIn: "1h" }
+    "NoobCoder"
   );
 };
 
 userRouter.post("/register", (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, faculty } = req.body;
   User.findOne({ username }, (err, user) => {
     if (err)
       res.status(500).json({
-        message: { msgBody: "Error has occured", msgError: true },
+        message: { msgBody: "Error has occurred", msgError: true },
       });
     if (user)
       res.status(400).json({
         message: { msgBody: "Username is already taken", msgError: true },
       });
     else {
-      const newUser = new User({ username, password, role });
+      const newUser = new User({ username, password, role, faculty });
       newUser.save((err) => {
         if (err)
           res.status(500).json({
-            message: { msgBody: "Error has occured", msgError: true },
+            message: { msgBody: "Error has occurred", msgError: true },
           });
         else {
           res.status(201).json({
@@ -90,50 +88,67 @@ userRouter.post("/enroll", (req, res) => {
   });
 });
 
-//60d8ee1c15c4d11d045db169
-/*
-userRouter.put(
-  "/changePass/",
+// READ Students
+
+userRouter.get(
+  "/",
   passport.authenticate("jwt", { session: false }),
-  async function (req, res) {
-    console.log(req.headers.cookie.split(";")[1].split("=")[1]);
-    const token = req.headers.cookie.split(";")[1].split("=")[1];
-    if (!token) {
-      return res.json(false);
-    }
-    data = JWT.verify(token, "NoobCoder");
-    console.log("zzzzzzz" + data.user)
-    userId = data.user;
-    const existingUser = await User.find({ _id: userId });
-    const id = userId;
-    console.log("aaaaaaaaaa   " + existingUser);
-
-    //Making a user object to parse to the update function
-    let updatedUser = {};
-    updatedUser.password = req.body.password;
-
-    await User.findByIdAndUpdate(id, updatedUser, function (err, updatedData) {
-      if (err) {
-        console.log("aaa" + err);
+  (req, res) => {
+    User.find({ role: "student", faculty: req.user.faculty }, (error, data) => {
+      if (error) {
+        return next(error);
       } else {
-        console.log("mmm.." + updatedData);
-        res.send();
-        //res.redirect or res.send whatever you want to do
+        res.json(data);
       }
     });
   }
 );
-*/
+
+// Get Single Student
+userRouter.get(
+  "/edit-student/:id",
+  (req, res) => {
+    User.findById(req.params.id, (error, data) => {
+        if (error) {
+          return next(error);
+        } else {
+          res.json(data);
+        }
+      }
+    );
+  }
+);
+
+// Update Student
+userRouter.put(
+  "/update-student/:id",
+  async (req, res, next) => {
+    User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: req.body,
+      },
+      (error, data) => {
+        if (error) {
+          return next(error);
+        } else {
+          res.json(data);
+          console.log("Student updated successfully !");
+        }
+      }
+    );
+  }
+);
 
 userRouter.put(
   "/changePass",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
-    console.log(req.body);  
+    console.log(req.body);
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(req.body.password, salt);
     User.findOneAndUpdate(
-      {_id :req.user.id},
+      { _id: req.user.id },
       {
         password: passwordHash,
       },
@@ -149,17 +164,6 @@ userRouter.put(
     );
   }
 );
-
-/*
-studentRouter.put('/', (req: Request<StudentInterface>, res: Response) => {
-    if(req.body && req.body.dateOfBirth) {
-        const dateMomentObject = moment(req.body.dateOfBirth, "DD/MM/YYYY"); 
-        req.body.dateOfBirth = dateMomentObject.toISOString();
-    }
-    updateStudent(req, res);
-});
-
-*/
 
 userRouter.post(
   "/login",

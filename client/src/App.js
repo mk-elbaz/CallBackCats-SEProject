@@ -10,7 +10,6 @@ import Student from "./Components/Student";
 import TA from "./Components/TA";
 import Enroll from "./Components/Enroll";
 
-import CreateStudent from "./Components/create-student.component";
 import EditStudent from "./Components/edit-student.component";
 import EditCourse from "./Components/edit-course.component";
 import ViewCourse from "./Components/view-course.component";
@@ -54,11 +53,7 @@ function App() {
         component={CreateSchedule}
       />
 
-      <PrivateRoute
-        path="/create-student"
-        roles={["admin"]}
-        component={CreateStudent}
-      />
+      
       <PrivateRoute
         path="/create-course"
         roles={["admin"]}

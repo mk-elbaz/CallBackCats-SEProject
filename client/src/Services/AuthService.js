@@ -12,6 +12,34 @@ export default {
       else return { isAuthenticated: false, user: { username: "", role: "" } };
     });
   },
+  editStudent: () => {
+    return fetch("user/edit-student/")
+      .then((res) => res.json())
+      .then((data) => data);
+  }
+  ,
+  updateStudent: (user) => {
+    console.log(user);
+    return fetch("/user/update-student/", {
+      method: "PUT",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => data);
+  },
+  viewCourses: () => {
+    return fetch("/courses/")
+      .then((res) => res.json())
+      .then((data) => data);
+  },
+  viewStudents: () => {
+    return fetch("/user/")
+      .then((res) => res.json())
+      .then((data) => data);
+  },
   register: (user) => {
     console.log(user);
     return fetch("/user/register", {

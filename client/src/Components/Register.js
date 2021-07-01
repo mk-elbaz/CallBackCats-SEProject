@@ -3,7 +3,7 @@ import AuthService from "../Services/AuthService";
 import Message from "../Components/Message";
 
 const Register = (props) => {
-  const [user, setUser] = useState({ username: "", password: "", role: "" });
+  const [user, setUser] = useState({ username: "", password: "", role: "" , faculty: ""});
   const [message, setMessage] = useState(null);
   let timerID = useRef(null);
 
@@ -18,7 +18,7 @@ const Register = (props) => {
   };
 
   const resetForm = () => {
-    setUser({ username: "", password: "", role: "" });
+    setUser({ username: "", password: "", role: "" , faculty: "" });
   };
 
   const onSubmit = (e) => {
@@ -71,6 +71,17 @@ const Register = (props) => {
           onChange={onChange}
           className="form-control"
           placeholder="Enter role (admin/ta/student)"
+        />
+        <label htmlFor="faculty" className="sr-only">
+          Enter your Faculty:{" "}
+        </label>
+        <input
+          type="text"
+          name="faculty"
+          value={user.faculty}
+          onChange={onChange}
+          className="form-control"
+          placeholder="Enter Faculty (ta or student only) [CS/BIS/ENG]"
         />
         <button className="btn btn-lg btn-primary btn-block" type="submit">
           Register

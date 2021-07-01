@@ -1,28 +1,27 @@
 import React, { Component } from "react";
-import axios from 'axios';
-import Table from 'react-bootstrap/Table';
-import StudentTableRow from './StudentTableRow';
-
+import axios from "axios";
+import Table from "react-bootstrap/Table";
+import StudentTableRow from "./StudentTableRow";
+import AuthService from "../Services/AuthService";
 
 export default class StudentList extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      students: []
+      students: [],
     };
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8080/students/')
-      .then(res => {
+    AuthService.viewStudents()
+      .then((data) => {
         this.setState({
-          students: res.data
+          students: data,
         });
       })
       .catch((error) => {
         console.log(error);
-      })
+      });
   }
 
   DataTable() {
@@ -31,24 +30,21 @@ export default class StudentList extends Component {
     });
   }
 
-
   render() {
-    return (<div className="table-wrapper">
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Roll No</th>
-            <th>Grade</th>
-            <th>Major</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {this.DataTable()}
-        </tbody>
-      </Table>
-    </div>);
+    return (
+      <div className="table-wrapper">
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Grade</th>
+              <th>Faculty</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>{this.DataTable()}</tbody>
+        </Table>
+      </div>
+    );
   }
 }
