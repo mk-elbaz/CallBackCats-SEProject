@@ -424,7 +424,7 @@ export default function Createschedule() {
         
         
         <button className="btn btn-lg btn-primary btn-block" type="submit">
-          Add Day
+          Add Schedule
         </button>
       </form>
       {message ? <Message message={message} /> : null}
