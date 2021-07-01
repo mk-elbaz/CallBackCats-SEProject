@@ -20,10 +20,10 @@ const UserSchema = new mongoose.Schema({
   faculty: {
     type: String,
   },
-  courseGrade: {
-    course: { type: String },
-    grade: { type: String, default: "N/A" },
-  },
+  grade:{
+    type: String,
+    default: "N/A"
+  }
 });
 
 UserSchema.pre("save", function (next) {

@@ -21,6 +21,10 @@ let courseSchema = new Schema(
     semester: {
       type: Number,
     },
+    grade: {
+      type: String,
+      default: "N/A"
+    }
 
   },
   {

@@ -13,7 +13,7 @@ export default class StudentTableRow extends Component {
         return (
             <tr>
                 <td>{this.props.obj.username}</td>
-                <td>{this.props.obj.courseGrade[0].grade}</td>
+                <td>{this.props.obj.grade}</td>
                 <td>{this.props.obj.faculty}</td>
                 <td>
                     <Link className="edit-link" to={"/edit-student/" + this.props.obj._id}>

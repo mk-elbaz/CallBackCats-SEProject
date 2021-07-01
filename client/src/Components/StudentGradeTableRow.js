@@ -11,8 +11,7 @@ export default class StudentTableRow extends Component {
   render() {
     return (
       <tr>
-        <td>{this.props.obj.courseGrade[0].course}</td>
-        <td>{this.props.obj.courseGrade[0].grade}</td>
+        <td>{this.props.obj.grade}</td>
       </tr>
     );
   }

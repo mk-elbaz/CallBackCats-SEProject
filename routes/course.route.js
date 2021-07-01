@@ -72,7 +72,7 @@ router.get(
 );
 
 router.get(
-  "/viewCourseGrade/:name",
+  "/viewCourseGrade",
   passport.authenticate("jwt", { session: false }),
   async (req, res, next) => {
     console.log(req.user);

@@ -121,7 +121,6 @@ userRouter.put("/update-student/:id", async (req, res, next) => {
     if (error) {
       return next(error);
     } else {
-      console.log(data[0].courseGrade.grade);
       res.json(data);
       console.log("Student updated successfully !");
     }

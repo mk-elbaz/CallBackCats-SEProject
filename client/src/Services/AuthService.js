@@ -36,7 +36,7 @@ export default {
       .then((data) => data);
   },
   viewCourseGradeStud: () => {
-    return fetch("/user/viewCourseGrade/")
+    return fetch("/user/viewCourseGrade")
       .then((res) => res.json())
       .then((data) => data);
   },
