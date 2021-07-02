@@ -5,6 +5,6 @@
 # mernnnnnn
 
 
-The abbove pictures were for the planned UI but due to time we couldn't implement them.
+The above pictures were for the planned UI but due to time we couldn't implement them.
 
 //please install the extention before running and enable CORS https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en
