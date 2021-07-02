@@ -30,7 +30,7 @@ export default {
       .then((response) => response.json())
       .then((data) => data);
   },
-  viewCourses: () => {
+  viewCourses: async () => {
     return fetch("/courses/")
       .then((res) => res.json())
       .then((data) => data);

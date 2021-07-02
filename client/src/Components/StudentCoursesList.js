@@ -22,26 +22,29 @@ export default class CourseList extends Component {
       .catch((error) => {
         console.log(error);
       });
-
-     AuthService.grade().then(async (res) => {
-       const cou = [];
-       this.state.courses.forEach((course) => {
-         course.grade = res;
-         cou.push(course);
-       })
-       await this.setState({
-        courses: cou,
-      });
-      //console.log(cou)
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+     console.log(this.state.courses) 
     
   }
 
   DataTable() {
+    const cou = [];
+    AuthService.grade()
+      .then(async (res) => {
+        this.state.courses.forEach((course) => {
+          course.grade = res;
+          cou.push(course);
+        });
+      })
+      .then(async () => {
+        await this.setState({
+          courses: cou,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     return this.state.courses.map((y, i) => {
+      
       return <SCourseTableRow obj={y} key={i} />;
     });
   }
