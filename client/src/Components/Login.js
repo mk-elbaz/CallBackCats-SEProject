@@ -20,7 +20,6 @@ const Login = props=>{
             if(isAuthenticated){
                 authContext.setUser(user);
                 authContext.setIsAuthenticated(isAuthenticated);
-                props.history.push('/todos');
             }
             else
                 setMessage(message);

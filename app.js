@@ -1,17 +1,32 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-app.use(cookieParser());
+const userRouter = require('./routes/User.js');
+const courseRouter = require('./routes/course.route.js');
+const cors = require('cors')
+app.use(express.json());app.use(cookieParser());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000/",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://mkelbaz:nnkoko11@cluster0.0bthm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{useNewUrlParser : true,useUnifiedTopology: true},()=>{
-    console.log('successfully connected to database');
+app.use('/courses', courseRouter)
+app.use('/user',userRouter);
+mongoose.connect('mongodb+srv://mkelbaz:nnkoko11@bazdb.0bthm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',{useNewUrlParser : true,useUnifiedTopology: true},()=>{
+console.log('successfully connected to database');
+console.log("----------------------------------------------------------------------------------------------")
 });
 
-const userRouter = require('./routes/User');
-app.use('/user',userRouter);
+mongoose.set('useFindAndModify' , false);
 
-app.listen(5000,()=>{
+
+app.listen(8080,()=>{
     console.log('express server started');
 });
