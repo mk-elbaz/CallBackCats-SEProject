@@ -22,11 +22,27 @@ export default class CourseList extends Component {
       .catch((error) => {
         console.log(error);
       });
+
+     AuthService.grade().then(async (res) => {
+       const cou = [];
+       this.state.courses.forEach((course) => {
+         course.grade = res;
+         cou.push(course);
+       })
+       await this.setState({
+        courses: cou,
+      });
+      //console.log(cou)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    
   }
 
   DataTable() {
-    return this.state.courses.map((res, i) => {
-      return <SCourseTableRow obj={res} key={i} />;
+    return this.state.courses.map((y, i) => {
+      return <SCourseTableRow obj={y} key={i} />;
     });
   }
 
@@ -40,6 +56,8 @@ export default class CourseList extends Component {
               <th>ID</th>
               <th>Major</th>
               <th>Semester</th>
+              <th>Description</th>
+              <th>Grade</th>
               <th>Action</th>
             </tr>
           </thead>

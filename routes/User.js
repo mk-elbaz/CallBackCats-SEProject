@@ -104,6 +104,14 @@ userRouter.get(
   }
 );
 
+userRouter.get(
+  "/grade",
+  passport.authenticate("jwt", { session: false }),
+   (req, res) => {
+    res.json(req.user.grade);
+  }
+);
+
 // Get Single Student
 userRouter.get("/edit-student/:id", (req, res) => {
   User.findById(req.params.id, (error, data) => {
@@ -117,7 +125,9 @@ userRouter.get("/edit-student/:id", (req, res) => {
 
 // Update Student
 userRouter.put("/update-student/:id", async (req, res, next) => {
-  User.find({ _id: req.params.id }, (error, data) => {
+  console.log(req.body);
+  console.log(req.params.id)
+  await User.findOneAndUpdate({ _id: req.params.id }, {grade: req.body.grade}, (error, data) => {
     if (error) {
       return next(error);
     } else {

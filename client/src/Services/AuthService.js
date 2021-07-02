@@ -91,6 +91,11 @@ export default {
       .then((res) => res.json())
       .then((data) => data);
   },
+  grade: () => {
+    return fetch("/user/grade")
+      .then((res) => res.json())
+      .then((data) => data);
+  },
   enroll: (user) => {
     console.log(user);
     return fetch("/user/enroll", {

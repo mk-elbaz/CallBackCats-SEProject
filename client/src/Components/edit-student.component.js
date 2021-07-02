@@ -43,6 +43,8 @@ export default class EditStudent extends Component {
   onSubmit(e) {
     e.preventDefault();
     const studentObject = {
+      username: this.state.username,
+      faculty: this.state.faculty,
       grade: this.state.grade,
     };
 
